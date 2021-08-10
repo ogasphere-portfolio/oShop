@@ -51,6 +51,46 @@ $router->map(
     'main-home'
 );
 
+$router->map(
+    'GET',
+    '/produit',
+    [
+        'method' => 'findProduct',
+        'controller' => '\App\Controllers\ProductController'
+    ],
+    'product-product-list'
+);
+
+$router->map(
+    'GET',
+    '/produit/[i:id]',
+    [
+        'method' => 'findProductById',
+        'controller' => '\App\Controllers\ProductController'
+    ],
+    'product-product-by-id'
+);
+
+$router->map(
+    'GET',
+    '/categorie',
+    [
+        'method' => 'findCategory',
+        'controller' => '\App\Controllers\CategoryController'
+    ],
+    'category-category-list'
+);
+
+$router->map(
+    'GET',
+    '/categorie/[i:id]',
+    [
+        'method' => 'findCategoryById',
+        'controller' => '\App\Controllers\CategoryController'
+    ],
+    'category-category-by-id'
+);
+
 
 /* -------------
 --- DISPATCH ---

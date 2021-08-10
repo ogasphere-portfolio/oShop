@@ -11,6 +11,9 @@ use PDO;
  */
 class Product extends CoreModel {
     
+
+    
+
     /**
      * @var string
      */
@@ -48,12 +51,7 @@ class Product extends CoreModel {
      */
     private $type_id;
     
-    /**
-     * Méthode permettant de récupérer un enregistrement de la table Product en fonction d'un id donné
-     * 
-     * @param int $productId ID du produit
-     * @return Product
-     */
+
     public function find($productId)
     {
         // récupérer un objet PDO = connexion à la BDD
@@ -91,7 +89,13 @@ class Product extends CoreModel {
         
         return $results;
     }
-
+    /**
+     * Méthode permettant de récupérer un enregistrement de la table Product en fonction d'un id donné
+     * 
+     * @param int $productId ID du produit
+     * @return Product
+     */
+   
     /**
      * Get the value of name
      *

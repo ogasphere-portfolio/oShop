@@ -1,0 +1,3 @@
+// commande pour lancer le serveur directement sur localhost port 8080
+
+php -S localhost:8080 -t public

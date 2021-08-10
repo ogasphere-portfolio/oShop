@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 class CoreController {
+
     /**
      * Méthode permettant d'afficher du code HTML en se basant sur les views
      *
@@ -36,7 +37,7 @@ class CoreController {
 
         // $viewData est disponible dans chaque fichier de vue
         require_once __DIR__.'/../views/layout/header.tpl.php';
-        require_once __DIR__.'/../views/'.$viewName.'.tpl.php';
+        require_once __DIR__.'/../views/main/'.$viewName.'.tpl.php';
         require_once __DIR__.'/../views/layout/footer.tpl.php';
     }
 }

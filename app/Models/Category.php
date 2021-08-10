@@ -24,6 +24,59 @@ class Category extends CoreModel {
      */
     private $home_order;
 
+    public function find($categoryId)
+    {
+        // se connecter à la BDD
+        $pdo = Database::getPDO();
+
+        // écrire notre requête
+        $sql = 'SELECT * FROM `category` WHERE `id` =' . $categoryId;
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->query($sql);
+
+        // un seul résultat => fetchObject
+        $category = $pdoStatement->fetchObject('App\Models\Category');
+
+        // retourner le résultat
+        return $category;
+    }
+
+    /**
+     * Méthode permettant de récupérer tous les enregistrements de la table category
+     * 
+     * @return Category[]
+     */
+    public function findAll()
+    {
+        $pdo = Database::getPDO();
+        $sql = 'SELECT * FROM `category`';
+        $pdoStatement = $pdo->query($sql);
+        $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Category');
+        
+        return $results;
+    }
+
+    /**
+     * Récupérer les 5 catégories mises en avant sur la home
+     * 
+     * @return Category[]
+     */
+    public function findAllHomepage()
+    {
+        $pdo = Database::getPDO();
+        $sql = '
+            SELECT *
+            FROM category
+            WHERE home_order > 0
+            ORDER BY home_order ASC
+        ';
+        $pdoStatement = $pdo->query($sql);
+        $categories = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Category');
+        
+        return $categories;
+    }
+
     /**
      * Get the value of name
      *
@@ -98,56 +151,5 @@ class Category extends CoreModel {
      * @param int $categoryId ID de la catégorie
      * @return Category
      */
-    public function find($categoryId)
-    {
-        // se connecter à la BDD
-        $pdo = Database::getPDO();
-
-        // écrire notre requête
-        $sql = 'SELECT * FROM `category` WHERE `id` =' . $categoryId;
-
-        // exécuter notre requête
-        $pdoStatement = $pdo->query($sql);
-
-        // un seul résultat => fetchObject
-        $category = $pdoStatement->fetchObject('App\Models\Category');
-
-        // retourner le résultat
-        return $category;
-    }
-
-    /**
-     * Méthode permettant de récupérer tous les enregistrements de la table category
-     * 
-     * @return Category[]
-     */
-    public function findAll()
-    {
-        $pdo = Database::getPDO();
-        $sql = 'SELECT * FROM `category`';
-        $pdoStatement = $pdo->query($sql);
-        $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Category');
-        
-        return $results;
-    }
-
-    /**
-     * Récupérer les 5 catégories mises en avant sur la home
-     * 
-     * @return Category[]
-     */
-    public function findAllHomepage()
-    {
-        $pdo = Database::getPDO();
-        $sql = '
-            SELECT *
-            FROM category
-            WHERE home_order > 0
-            ORDER BY home_order ASC
-        ';
-        $pdoStatement = $pdo->query($sql);
-        $categories = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Category');
-        
-        return $categories;
-    }
+    
 }
