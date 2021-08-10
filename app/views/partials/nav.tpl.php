@@ -18,13 +18,13 @@
                         <a class="nav-link" href="<?= $router->generate('product-product-list') ?>">Produits</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Types</a>
+                        <a class="nav-link" href="<?= $router->generate('type-type-list') ?>">Types</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Marques</a>
+                        <a class="nav-link" href="<?= $router->generate('brand-brand-list') ?>">Marques</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tags</a>
+                        <a class="nav-link" href="<?= $router->generate('tag-tag-list') ?>">Tags</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Sélections Accueil &amp; Footer</a>

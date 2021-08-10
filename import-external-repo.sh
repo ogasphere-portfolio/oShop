@@ -56,7 +56,7 @@ if [[ `git status --porcelain` ]]
 then
     # Changes
     echo " "
-    echo "Il y a des modifiations non commitées"
+    echo "Il y a des modifications non commitées"
     read -p "Voulez-vous les écraser ou les garder (E = écraser / G = garder / A = abandon) ? " choice
     
     if [ "$choice" = "E" ] || [ "$choice" = "e" ]

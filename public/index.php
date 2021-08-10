@@ -91,6 +91,66 @@ $router->map(
     'category-category-by-id'
 );
 
+$router->map(
+    'GET',
+    '/type',
+    [
+        'method' => 'findType',
+        'controller' => '\App\Controllers\TypeController'
+    ],
+    'type-type-list'
+);
+
+$router->map(
+    'GET',
+    '/type/[i:id]',
+    [
+        'method' => 'findTypeById',
+        'controller' => '\App\Controllers\TypeController'
+    ],
+    'type-type-by-id'
+);
+
+$router->map(
+    'GET',
+    '/brand',
+    [
+        'method' => 'findBrand',
+        'controller' => '\App\Controllers\BrandController'
+    ],
+    'brand-brand-list'
+);
+
+$router->map(
+    'GET',
+    '/brand/[i:id]',
+    [
+        'method' => 'findBrandById',
+        'controller' => '\App\Controllers\BrandController'
+    ],
+    'brand-brand-by-id'
+);
+
+
+$router->map(
+    'GET',
+    '/tag',
+    [
+        'method' => 'findTag',
+        'controller' => '\App\Controllers\TagController'
+    ],
+    'tag-tag-list'
+);
+
+$router->map(
+    'GET',
+    '/tag/[i:id]',
+    [
+        'method' => 'findTagById',
+        'controller' => '\App\Controllers\TagController'
+    ],
+    'tag-tag-by-id'
+);
 
 /* -------------
 --- DISPATCH ---

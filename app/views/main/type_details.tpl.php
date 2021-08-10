@@ -1,0 +1,1 @@
+<h1>Fiche d'un Type</h1>
