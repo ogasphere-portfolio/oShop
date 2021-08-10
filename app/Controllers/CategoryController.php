@@ -23,7 +23,6 @@ class CategoryController extends CoreController {
     }
 
    
-
     public function findCategoryById($categoryId)
     {
         $categoryModel = new Category();

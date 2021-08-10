@@ -14,6 +14,7 @@ class CoreController {
     protected function show(string $viewName, $viewData = []) {
         // On globalise $router car on ne sait pas faire mieux pour l'instant
         global $router;
+        $absoluteURL = isset($_SERVER['BASE_URI']) ? $_SERVER['BASE_URI'] : '';
 
         // Comme $viewData est déclarée comme paramètre de la méthode show()
         // les vues y ont accès
