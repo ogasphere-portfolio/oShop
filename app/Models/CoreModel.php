@@ -18,7 +18,12 @@ class CoreModel {
      */
     protected $updated_at;
 
-
+    public static function valid_donnees($donnees){
+        $donnees = trim($donnees);
+        $donnees = stripslashes($donnees);
+        $donnees = htmlspecialchars($donnees);
+        return $donnees;
+    }
     /**
      * Get the value of id
      *

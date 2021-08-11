@@ -1,6 +1,6 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.html">oShop</a>
+            <a class="navbar-brand" href="<?= $router->generate('main-home') ?>">oShop</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -12,25 +12,22 @@
                         <a class="nav-link" href="<?= $router->generate('main-home') ?>">Accueil <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->generate('category-category-list') ?>">Catégories</a>
+                        <a class="nav-link" href="<?= $router->generate('category-categories') ?>">Catégories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->generate('product-product-list') ?>">Produits</a>
+                        <a class="nav-link" href="<?= $router->generate('product-products') ?>">Produits</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->generate('type-type-list') ?>">Types</a>
+                        <a class="nav-link" href="#">Types</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->generate('brand-brand-list') ?>">Marques</a>
+                        <a class="nav-link" href="#">Marques</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $router->generate('tag-tag-list') ?>">Tags</a>
+                        <a class="nav-link" href="#">Tags</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Sélections Accueil &amp; Footer</a>
-                    </li>
-                    <li>
-                        <a href="<?= md5(time()) ?>">404</a>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">

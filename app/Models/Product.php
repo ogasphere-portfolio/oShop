@@ -11,9 +11,6 @@ use PDO;
  */
 class Product extends CoreModel {
     
-
-    
-
     /**
      * @var string
      */
@@ -51,8 +48,13 @@ class Product extends CoreModel {
      */
     private $type_id;
     
-
-    public function find($productId)
+    /**
+     * Méthode permettant de récupérer un enregistrement de la table Product en fonction d'un id donné
+     * 
+     * @param int $productId ID du produit
+     * @return Product
+     */
+    public static function find($productId)
     {
         // récupérer un objet PDO = connexion à la BDD
         $pdo = Database::getPDO();
@@ -80,7 +82,7 @@ class Product extends CoreModel {
      * 
      * @return Product[]
      */
-    public function findAll()
+    public static function findAll()
     {
         $pdo = Database::getPDO();
         $sql = 'SELECT * FROM `product`';
@@ -89,13 +91,17 @@ class Product extends CoreModel {
         
         return $results;
     }
-    /**
-     * Méthode permettant de récupérer un enregistrement de la table Product en fonction d'un id donné
-     * 
-     * @param int $productId ID du produit
-     * @return Product
-     */
-   
+
+    public static function findSome($elementsToFind = 3)
+    {
+        $pdo = Database::getPDO();
+        $sql = "SELECT * FROM `product` LIMIT {$elementsToFind}";
+        $pdoStatement = $pdo->query($sql);
+        $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Product');
+        
+        return $results;
+    }
+
     /**
      * Get the value of name
      *

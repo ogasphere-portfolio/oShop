@@ -1,28 +1,45 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\Product;
 
+
 class ProductController extends CoreController {
 
-
-public function findProduct()
+    /**
+     * Méthode s'occupant de la page d'accueil
+     *
+     * @return void
+     */
+    public function products()
     {
-        $products = new Product();
-        $productInfos = $products->findAll();
+        $products = Product::findAll();
 
-        $this->show('product_list', ['productInfos' => $productInfos]);
+        $this->show('product/products', [
+            'products' => $products,
+        ]);
     }
 
-    public function findProductById($productId)
+    public function newProductForm()
     {
-        $productModel = new product();
-        $productById = $productModel->find($productId);
-        $product= [
-            "product" => $productById,
-            
-        ];
-     
-        $this->show('product_details', $product);
+        $this->show('product/productForm');
+    }
+
+    public function updateProductForm($id)
+    {
+        // On recupere le contenu d'un produit via son id
+
+        // On l'envoie vers la vue
+        $product = Product::find($id);
+
+        if($product) {
+            $this->show('product/productForm', [
+                'product' => $product,
+            ]);
+        } else {
+            dd('Id non trouvée dans la BDD');
+        }
+        
     }
 }

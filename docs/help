@@ -1,3 +1,7 @@
 // commande pour lancer le serveur directement sur localhost port 8080
 
 php -S localhost:8080 -t public
+ou
+
+cette commande permet de laisser l" acces aux autres par le vpn
+php -S 0.0.0.0:8080 -t public
