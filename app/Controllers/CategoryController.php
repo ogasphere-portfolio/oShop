@@ -33,7 +33,7 @@ class CategoryController extends CoreController
     {
         $this->show('category/categoryForm');
     }
-    
+
     public function displayUpdateCategory($id)
     {
         // On recupere le contenu d'un produit via son id
@@ -58,9 +58,8 @@ class CategoryController extends CoreController
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $subtitle = filter_input(INPUT_POST, 'subtitle', FILTER_SANITIZE_STRING);
         $picture = filter_input(INPUT_POST, 'picture', FILTER_SANITIZE_STRING);
-        
-        
 
+       
         // J'instancie une nouvelle categorie vide
         $newCategory = new Category();
 
@@ -90,13 +89,13 @@ class CategoryController extends CoreController
         
         $updateCategory = new Category();
         // TODO utiliser les setters pour mettre "peupler" les propriétés
-       
+
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $subtitle = filter_input(INPUT_POST, 'subtitle', FILTER_SANITIZE_STRING);
         $picture = filter_input(INPUT_POST, 'picture', FILTER_SANITIZE_STRING);
         $date = new DateTime();
         $updatedAt = $date->getTimestamp();
-       
+
 
 
         // Je remplis ma categorie avec les données du formulaire
@@ -110,6 +109,5 @@ class CategoryController extends CoreController
         dd($updateCategory);
 
         header('location: ' . $router->generate('category-displayUpdateCategory', ['id' => $updateCategory->$idCategory]));
-
     }
 }

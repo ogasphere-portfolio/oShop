@@ -54,32 +54,48 @@ class CoreModel
     public function testInsert($table)
     {
         // Todo tentative de mise en place d'un insert dynamique
-
+        
         $pdo = Database::getPDO();
-
+        $fields_list="";
+        $value_list="";
         // on recupere le nom des colonnes de la table $table
         $columns = $this->getColumnNames($table);
-
+        $cpt = 0;
         foreach ($columns as $col) {
-            echo $col . '<br/>';
-        }
+           $cpt++;
+           
+           if ($cpt == 1) {
+            $fields_list = "({$col}," ;
+            $value_list = "[:{$col}" ;
 
-        // todo dynamiser la requete et son execution avec $columns et $table
+           } else {
+            $fields_list = "{$fields_list},{$col}";
+            $value_list = "{$value_list},:{$col}";
+           }
+          
+        }
+        //on ferme la parenthese
+        $fields_list = "{$fields_list})";   // pour la table produit $fields_list vaut : "(id,,name,subtitle,picture,home_order,created_at,updated_at)"
+        
+        // on ferme les crochets
+        $value_list = "{$value_list}]"; // pour la table produit $value_list vaut : [:id,:name,:subtitle,:picture,:home_order,:created_at,:updated_at]"
+       
+
+       die();
+        
         $sql = "
-            INSERT INTO category (name, subtitle, picture)
-            VALUES (
-                :name,
-                :subtitle,
-                :picture
-                )";
+            INSERT INTO `{$table}` {$fields_list}
+            VALUES $value_list";
 
 
         $request = $pdo->prepare($sql);
 
+        // todo dynamiser l' execution avec $columns et $table
+        // todo creer la chaine de caractzeres à passer à execute() à faire dans le for each au dessus
         $insertedRows = $request->execute([
-            ':name' => $this->getName(),
-            ':subtitle' => $this->getSubtitle(),
-            ':picture' => $this->getPicture(),
+            ':name' => $table->getName(),
+            ':subtitle' => $table->getSubtitle(),
+            ':picture' => $table->getPicture()
         ]);
 
         // Si au moins une ligne ajoutée
