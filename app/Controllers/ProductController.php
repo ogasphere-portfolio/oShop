@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\Product;
 
 
+
+
 class ProductController extends CoreController {
 
     /**
@@ -21,12 +23,12 @@ class ProductController extends CoreController {
         ]);
     }
 
-    public function newProductForm()
+    public function displayNewProduct()
     {
         $this->show('product/productForm');
     }
 
-    public function updateProductForm($id)
+    public function displayUpdateProduct($id)
     {
         // On recupere le contenu d'un produit via son id
 
@@ -34,12 +36,37 @@ class ProductController extends CoreController {
         $product = Product::find($id);
 
         if($product) {
-            $this->show('product/productForm', [
+            $this->show('product/product', [
                 'product' => $product,
             ]);
         } else {
             dd('Id non trouvée dans la BDD');
         }
         
+    }
+
+    public function createProduct()
+    {
+        global $router;
+
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+        $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_STRING);
+        $categoryId = filter_input(INPUT_POST, 'idCategory', FILTER_SANITIZE_STRING);
+        $typeId = filter_input(INPUT_POST, 'idType', FILTER_SANITIZE_STRING);
+        $brandId = filter_input(INPUT_POST, 'idBrand', FILTER_SANITIZE_STRING);
+        
+
+        $newProduct = new Product();
+        $newProduct->setName($name);
+        $newProduct->setDescription($description);
+        $newProduct->setPrice($price);
+        $newProduct->setCategoryId($categoryId);
+        $newProduct->setTypeId($typeId);
+        $newProduct->setBrandId($brandId);
+
+        $result = $newProduct->insert();
+        header('location: ' . $router->generate('product-products'));
+
     }
 }

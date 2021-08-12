@@ -67,20 +67,29 @@ $router->map(
     'GET',
     '/category/edit/[i:id]',
     [
-        'method' => 'updateCategoryForm',
+        'method' => 'displayUpdateCategory',
         'controller' => '\App\Controllers\CategoryController'
     ],
-    'category-updateCategoryForm'
+    'category-displayUpdateCategory'
 );
 
 $router->map(
     'GET',
     '/category/new',
     [
-        'method' => 'newCategory',
+        'method' => 'displayNewCategory',
         'controller' => '\App\Controllers\CategoryController'
     ],
-    'category-newCategory'
+    'category-displayNewCategory'
+);
+$router->map(
+    'POST',
+    '/category/update/[i:id]',
+    [
+        'method' => 'updateCategory',
+        'controller' => '\App\Controllers\CategoryController'
+    ],
+    'category-updateCategory'
 );
 
 /* route pour inserer une nouvelle categorie */
@@ -88,10 +97,10 @@ $router->map(
     'POST',
     '/category/new',
     [
-        'method' => 'categoryFormValid',
+        'method' => 'createCategory',
         'controller' => '\App\Controllers\CategoryController'
     ],
-    'category-categoryFormValid'
+    'category-createCategory'
 );
 
 $router->map(
@@ -108,31 +117,43 @@ $router->map(
     'GET',
     '/product/new',
     [
-        'method' => 'newProductForm',
+        'method' => 'displayNewProduct',
         'controller' => '\App\Controllers\ProductController'
     ],
-    'product-newProductForm'
+    'product-displayNewProduct'
 );
 
 $router->map(
     'GET',
     '/product/edit/[i:id]',
     [
-        'method' => 'updateProductForm',
+        'method' => 'displayUpdateProduct',
         'controller' => '\App\Controllers\ProductController'
     ],
-    'product-updateProductForm'
+    'product-displayUpdateProduct'
 );
 
 $router->map(
-    'GET',
-    '/product/validation',
+    'POST',
+    '/product/update/[i:id]',
     [
-        'method' => 'productFormValid',
+        'method' => 'updateProduct',
         'controller' => '\App\Controllers\ProductController'
     ],
-    'product-productFormValid'
+    'product-updateProduct'
 );
+
+/* route pour inserer un nouveau produit */
+$router->map(
+    'POST',
+    '/product/new',
+    [
+        'method' => 'createProduct',
+        'controller' => '\App\Controllers\ProductController'
+    ],
+    'product-createProduct'
+);
+
 
 $router->map(
     'GET',

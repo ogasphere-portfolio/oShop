@@ -102,6 +102,63 @@ class Product extends CoreModel {
         return $results;
     }
 
+    public function insert()
+    {
+        // Récupération de l'objet PDO représentant la connexion à la DB
+        $pdo = Database::getPDO();
+
+        // Ecriture de la requête INSERT INTO
+        /**$sql = "
+            INSERT INTO category (name, subtitle, picture)
+            VALUES (
+                '{$this->name}',
+                '{$this->subtitle}',
+                '{$this->picture}'
+                )";
+
+        // Execution de la requête d'insertion (exec, pas query)
+        $insertedRows = $pdo->exec($sql);**/
+
+        // Ici on prepare la requete avec la syntaxe : qui permet de "mettre en attente"
+        // Une valeur qu'on va inserer apres
+        $sql = '
+            INSERT INTO product (`name`, `description`, `price`, `category_id`, `brand_id`, `type_id`)
+            VALUES (
+                :name,
+                :description,
+                :price,
+                :category_id,
+                :brand_id,
+                :type_id
+            )';
+
+        // On lance la préparation de notre requete
+        // Je la met en attente des variables
+        $request = $pdo->prepare($sql);
+
+        // On execute notre requete preparée en liant les variables aux :
+        $insertedRows = $request->execute([
+            ':name' => $this->getName(),
+            ':description' => $this->getDescription(),
+            ':price' => $this->getPrice(),
+            ':category_id' => $this->getCategoryId(),
+            ':brand_id' => $this->getBrandId(),
+            ':type_id' => $this->getTypeId(),
+        ]);
+        
+        // Si au moins une ligne ajoutée
+        if ($insertedRows > 0) {
+            // Alors on récupère l'id auto-incrémenté généré par MySQL
+            $this->id = $pdo->lastInsertId();
+
+            // On retourne VRAI car l'ajout a parfaitement fonctionné
+            return true;
+            // => l'interpréteur PHP sort de cette fonction car on a retourné une donnée
+        }
+        
+        // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
+        return false;
+    }
     /**
      * Get the value of name
      *

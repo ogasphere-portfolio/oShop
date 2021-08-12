@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\CoreModel;
-dump($_POST);
+
     $name = CoreModel::valid_donnees($_POST["name"]);
     $subtitle = CoreModel::valid_donnees($_POST["subtitle"]);
     $picture = CoreModel::valid_donnees($_POST["picture"]);

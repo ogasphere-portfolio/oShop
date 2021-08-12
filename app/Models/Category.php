@@ -105,12 +105,21 @@ class Category extends CoreModel {
 
         // Ecriture de la requête INSERT INTO
         $sql = "
-            INSERT INTO `category` (name, subtitle,picture,home_order,created_at,updated_at)
-            VALUES ('{$this->name}', '{$this->subtitle}','{$this->picture}','{$this->home_order}','{$this->created_at}','{$this->updated_at}')
-        ";
+            INSERT INTO category (name, subtitle, picture)
+            VALUES (
+                :name,
+                :subtitle,
+                :picture
+                )";
 
-        // Execution de la requête d'insertion (exec, pas query)
-        $insertedRows = $pdo->exec($sql);
+
+        $request = $pdo->prepare($sql);
+
+        $insertedRows = $request->execute([
+            ':name' => $this->getName(),
+            ':subtitle' => $this->getSubtitle(),
+            ':picture' => $this->getPicture(),
+        ]);
 
         // Si au moins une ligne ajoutée
         if ($insertedRows > 0) {
@@ -125,29 +134,46 @@ class Category extends CoreModel {
         // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
         return false;
     }
-
     /**
      * Méthode permettant de mettre à jour un enregistrement dans la table brand
      * L'objet courant doit contenir l'id, et toutes les données à ajouter : 1 propriété => 1 colonne dans la table
      * 
      * @return bool
      */
-    public function update()
+    public function update($id)
     {
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
 
-        // Ecriture de la requête UPDATE
-        $sql = "
-            UPDATE `category`
-            SET
-                name = '{$this->name}',
-                subtitle = {$this->subtitle},
-                updated_at = NOW(),
-                picture = '{$this->picture}',
-                home_order = '{$this->home_order}',
-            WHERE id = {$this->id}
-        ";
+
+        $request = $pdo->prepare("UPDATE `category`SET
+            name = '{$this->name}',
+            subtitle = {$this->subtitle},
+            updated_at = NOW(),
+            picture = '{$this->picture}',
+            home_order = '{$this->home_order}',
+        WHERE id = {$this->id}");
+
+        
+
+        $insertedRows = $request->execute([
+            ':name' => $this->getName(),
+            ':subtitle' => $this->getSubtitle(),
+            ':picture' => $this->getPicture(),
+        ]);
+
+        // Si au moins une ligne ajoutée
+        if ($insertedRows > 0) {
+            // Alors on récupère l'id auto-incrémenté généré par MySQL
+            $this->id = $pdo->lastInsertId();
+
+            // On retourne VRAI car l'ajout a parfaitement fonctionné
+            return true;
+            // => l'interpréteur PHP sort de cette fonction car on a retourné une donnée
+        }
+
+        // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
+        return false;
 
         // Execution de la requête de mise à jour (exec, pas query)
         $updatedRows = $pdo->exec($sql);
