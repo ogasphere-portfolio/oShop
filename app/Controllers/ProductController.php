@@ -2,7 +2,12 @@
 
 namespace App\Controllers;
 
+
+
+use App\Models\Type;
+use App\Models\Brand;
 use App\Models\Product;
+use App\Models\Category;
 
 
 
@@ -25,6 +30,17 @@ class ProductController extends CoreController {
 
     public function displayNewProduct()
     {
+         // Je recupere la liste de tout type, category et brand
+         $categories = Category::findAll();
+         $brands = Brand::findAll();
+         $types = Type::findAll();
+ 
+         $this->show('product/productForm', [
+             'categories' => $categories,
+             'brands' => $brands,
+             'types' => $types,
+         ]);
+         
         $this->show('product/productForm');
     }
 
@@ -36,7 +52,7 @@ class ProductController extends CoreController {
         $product = Product::find($id);
 
         if($product) {
-            $this->show('product/product', [
+            $this->show('product/productForm', [
                 'product' => $product,
             ]);
         } else {
@@ -70,3 +86,4 @@ class ProductController extends CoreController {
 
     }
 }
+

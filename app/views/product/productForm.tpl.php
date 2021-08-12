@@ -12,7 +12,7 @@
         </div>
         <div class="form-group">
             <label for="subtitle">Description</label>
-            <input value="Ceci est un produit" type="text" class="form-control" name="description" id="subtitle" placeholder="" value="<?= isset($product) ? $product->getSubtitle() : '' ?>" aria-describedby="subtitleHelpBlock">
+            <input value="Ceci est un produit" type="text" class="form-control" name="description" id="subtitle" placeholder="" value="<?= isset($product) ? $product->getDescription() : '' ?>" aria-describedby="subtitleHelpBlock">
 
         </div>
 
@@ -31,18 +31,37 @@
                 URL relative d'une image (jpg, gif, svg ou png) fournie sur <a href="https://benoclock.github.io/S06-images/" target="_blank">cette page</a>
             </small>
         </div>
+
+        // todo afficher les bonnes marques types et categories en mode modification
         <div class="form-group">
-            <label for="idType">Id type</label>
-            <input value="1" type="number" class="form-control" name="idType" id="idType" placeholder="" value="<?= isset($product) ? $product->getTypeId() : '' ?>">
-        </div>
-        <div class="form-group">
-            <label for="idCategory">Id Category</label>
-            <input value="1" type="number" class="form-control" name="idCategory" id="idCategory" placeholder="" value="<?= isset($product) ? $product->getCategoryId() : '' ?>">
-        </div>
-        <div class="form-group">
-            <label for="idBrand">Id Marque</label>
-            <input value="1" type="number" class="form-control" name="idBrand" id="idBrand" placeholder="" value="<?= isset($product) ? $product->getBrandId() : '' ?>">
-        </div>
+                    <label for="idType">Type</label>
+                    <select name="idType" id="idType">
+                        <?php foreach($types as $type): ?>
+                            <option value="<?= $type->getId() ?>"><?= $type->getName() ?></option>
+                        <?php endforeach ; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="idCategory">Category</label>
+                    <select name="idCategory" id="idCategory">
+                        <?php foreach($categories as $category): ?>
+                            <option value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
+                        <?php endforeach ; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="idBrand">Marque</label>
+                    <select name="idBrand" id="idBrand">
+                        <?php foreach($brands as $brand): ?>
+                            <option value="<?= $brand->getId() ?>"><?= $brand->getName() ?></option>
+                        <?php endforeach ; ?>
+                    </select>
+                </div>          
+
+
+
+
+        
 
         <button type="submit" class="btn btn-primary btn-block mt-5">Valider</button>
     </form>

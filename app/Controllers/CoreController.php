@@ -11,6 +11,8 @@ class CoreController {
      * @param array $viewData Tableau des données à transmettre aux vues
      * @return void
      */
+  
+
     protected function show(string $viewName, $viewData = []) {
         // On globalise $router car on ne sait pas faire mieux pour l'instant
         global $router;

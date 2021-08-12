@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use DateTime;
 use App\Models\Category;
 
 
@@ -58,9 +59,7 @@ class CategoryController extends CoreController
         $subtitle = filter_input(INPUT_POST, 'subtitle', FILTER_SANITIZE_STRING);
         $picture = filter_input(INPUT_POST, 'picture', FILTER_SANITIZE_STRING);
         
-        // @TODO
-        // Ajout possible d'un test pour une valeur du formulaire egale
-        // a null ou false
+        
 
         // J'instancie une nouvelle categorie vide
         $newCategory = new Category();
@@ -71,7 +70,8 @@ class CategoryController extends CoreController
         $newCategory->setPicture($picture);
 
         // Inserer le contenu du formulaire en BDD
-        $newCategory->insert();
+        // todo a remodifier en insert() apres les test
+        $newCategory->testInsert('category');
 
         header('location: ' . $router->generate('category-categories'));
 
@@ -80,28 +80,36 @@ class CategoryController extends CoreController
 
     }
 
-    public function updateCategory($id = 0)
+    public function updateCategory($idCategory = 0)
     {
         // Dans le cas d'un update : On recupere le contenu d'un produit via son id
 
         // dans le cas d'un         // TODO : il faut récupérer les données du $_POST
 
+        global $router;
         
-        // On envoies les info du POST au model
-
-        //envoie vers la vue
-        $category = new Category();
+        $updateCategory = new Category();
         // TODO utiliser les setters pour mettre "peupler" les propriétés
+       
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+        $subtitle = filter_input(INPUT_POST, 'subtitle', FILTER_SANITIZE_STRING);
+        $picture = filter_input(INPUT_POST, 'picture', FILTER_SANITIZE_STRING);
+        $date = new DateTime();
+        $updatedAt = $date->getTimestamp();
+       
 
 
+        // Je remplis ma categorie avec les données du formulaire
+        $updateCategory->setName($name);
+        $updateCategory->setSubtitle($subtitle);
+        $updateCategory->setPicture($picture);
+        $updateCategory->setUpdated_at($updatedAt);
 
+        $updateCategory->update($idCategory);
 
+        dd($updateCategory);
 
-        $category->insert();
-        dd($category);
+        header('location: ' . $router->generate('category-displayUpdateCategory', ['id' => $updateCategory->$idCategory]));
 
-        $this->show('category/categoryForm', [
-            'category' => $category,
-        ]);
     }
 }

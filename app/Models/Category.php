@@ -100,9 +100,7 @@ class Category extends CoreModel {
      */
     public function insert()
     {
-        // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
-
         // Ecriture de la requête INSERT INTO
         $sql = "
             INSERT INTO category (name, subtitle, picture)
@@ -146,20 +144,22 @@ class Category extends CoreModel {
         $pdo = Database::getPDO();
 
 
-        $request = $pdo->prepare("UPDATE `category`SET
+        $request = $pdo->prepare("UPDATE `category` SET
             name = '{$this->name}',
             subtitle = {$this->subtitle},
             updated_at = NOW(),
             picture = '{$this->picture}',
             home_order = '{$this->home_order}',
-        WHERE id = {$this->id}");
+        WHERE id = {$id}");
 
-        
+
 
         $insertedRows = $request->execute([
             ':name' => $this->getName(),
             ':subtitle' => $this->getSubtitle(),
+            ':updated_at' => $this->getUpdatedAt(),
             ':picture' => $this->getPicture(),
+            ':home_order' => $this->getHomeOrder(),
         ]);
 
         // Si au moins une ligne ajoutée
@@ -176,10 +176,9 @@ class Category extends CoreModel {
         return false;
 
         // Execution de la requête de mise à jour (exec, pas query)
-        $updatedRows = $pdo->exec($sql);
+       
 
-        // On retourne VRAI, si au moins une ligne ajoutée
-        return ($updatedRows > 0);
+       
     }
 
 
