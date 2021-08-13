@@ -59,6 +59,7 @@ class CoreModel
         $fields_list="";
         $value_list="";
         // on recupere le nom des colonnes de la table $table
+        // todo trouver un moyen de verifier les attributs auto-increment et timestamp pour ne pas les inclure dans la requete
         $columns = $this->getColumnNames($table);
         $cpt = 0;
         foreach ($columns as $col) {
@@ -81,7 +82,7 @@ class CoreModel
         $value_list = "{$value_list}]"; // pour la table produit $value_list vaut : [:id,:name,:subtitle,:picture,:home_order,:created_at,:updated_at]"
        
 
-       die();
+       
         
         $sql = "
             INSERT INTO `{$table}` {$fields_list}
@@ -89,7 +90,7 @@ class CoreModel
 
 
         $request = $pdo->prepare($sql);
-
+        dd($request);
         // todo dynamiser l' execution avec $columns et $table
         // todo creer la chaine de caractzeres à passer à execute() à faire dans le for each au dessus
         $insertedRows = $request->execute([
