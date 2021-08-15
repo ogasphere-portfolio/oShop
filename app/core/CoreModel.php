@@ -1,14 +1,15 @@
 <?php
-
-namespace App\Models;
+namespace App\core;
 
 use PDO;
 use Exception;
 use App\Utils\Database;
 
+
+
 // Classe mère de tous les Models
 // On centralise ici toutes les propriétés et méthodes utiles pour TOUS les Models
-class CoreModel
+abstract class CoreModel
 {
     /**
      * @var int
@@ -92,7 +93,7 @@ class CoreModel
         $request = $pdo->prepare($sql);
         dd($request);
         // todo dynamiser l' execution avec $columns et $table
-        // todo creer la chaine de caractzeres à passer à execute() à faire dans le for each au dessus
+        // todo creer la chaine de caracteres à passer à execute() à faire dans le for each au dessus
         $insertedRows = $request->execute([
             ':name' => $table->getName(),
             ':subtitle' => $table->getSubtitle(),

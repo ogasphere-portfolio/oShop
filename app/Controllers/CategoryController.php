@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use DateTime;
 use App\Models\Category;
+use App\core\CoreController;
 
 
 
@@ -88,7 +89,7 @@ class CategoryController extends CoreController
         global $router;
         
         $updateCategory = new Category();
-        // TODO utiliser les setters pour mettre "peupler" les propriétés
+        
 
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $subtitle = filter_input(INPUT_POST, 'subtitle', FILTER_SANITIZE_STRING);
@@ -106,8 +107,8 @@ class CategoryController extends CoreController
 
         $updateCategory->update($idCategory);
 
-        dd($updateCategory);
+       
 
-        header('location: ' . $router->generate('category-displayUpdateCategory', ['id' => $updateCategory->$idCategory]));
+        header('location: ' . $router->generate('category-categories'));
     }
 }

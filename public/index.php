@@ -8,14 +8,13 @@
 // mais aussi d'activer le chargement automatique des classes (convention PSR-4)
 require_once '../vendor/autoload.php';
 
-/* ------------
---- ROUTAGE ---
--------------*/
-
 
 // création de l'objet router
 // Cet objet va gérer les routes pour nous, et surtout il va 
 $router = new AltoRouter();
+
+// Appel du fichier qui contient toutes les routes
+require '../app/Utils/routes.php';
 
 // le répertoire (après le nom de domaine) dans lequel on travaille est celui-ci
 // Mais on pourrait travailler sans sous-répertoire
@@ -25,200 +24,10 @@ if (array_key_exists('BASE_URI', $_SERVER)) {
     $router->setBasePath($_SERVER['BASE_URI']);
     // ainsi, nos routes correspondront à l'URL, après la suite de sous-répertoire
 }
-// sinon
 else {
     // On donne une valeur par défaut à $_SERVER['BASE_URI'] car c'est utilisé dans le CoreController
     $_SERVER['BASE_URI'] = '/';
 }
-
-// On doit déclarer toutes les "routes" à AltoRouter, afin qu'il puisse nous donner LA "route" correspondante à l'URL courante
-// On appelle cela "mapper" les routes
-// 1. méthode HTTP : GET ou POST (pour résumer)
-// 2. La route : la portion d'URL après le basePath
-// 3. Target/Cible : informations contenant
-//      - le nom de la méthode à utiliser pour répondre à cette route
-//      - le nom du controller contenant la méthode
-// 4. Le nom de la route : pour identifier la route, on va suivre une convention
-//      - "NomDuController-NomDeLaMéthode"
-//      - ainsi pour la route /, méthode "home" du MainController => "main-home"
-$router->map(
-    'GET',
-    '/',
-    [
-        'method' => 'home',
-        'controller' => '\App\Controllers\MainController'
-    ],
-    'main-home'
-);
-
-$router->map(
-    'GET',
-    '/categories',
-    [
-        'method' => 'categories',
-        'controller' => '\App\Controllers\CategoryController'
-    ],
-    'category-categories'
-);
-
-
-
-$router->map(
-    'GET',
-    '/category/edit/[i:id]',
-    [
-        'method' => 'displayUpdateCategory',
-        'controller' => '\App\Controllers\CategoryController'
-    ],
-    'category-displayUpdateCategory'
-);
-
-$router->map(
-    'GET',
-    '/category/new',
-    [
-        'method' => 'displayNewCategory',
-        'controller' => '\App\Controllers\CategoryController'
-    ],
-    'category-displayNewCategory'
-);
-$router->map(
-    'POST',
-    '/category/update/[i:id]',
-    [
-        'method' => 'updateCategory',
-        'controller' => '\App\Controllers\CategoryController'
-    ],
-    'category-updateCategory'
-);
-
-/* route pour inserer une nouvelle categorie */
-$router->map(
-    'POST',
-    '/category/new',
-    [
-        'method' => 'createCategory',
-        'controller' => '\App\Controllers\CategoryController'
-    ],
-    'category-createCategory'
-);
-
-$router->map(
-    'GET',
-    '/products',
-    [
-        'method' => 'products',
-        'controller' => '\App\Controllers\ProductController'
-    ],
-    'product-products'
-);
-
-$router->map(
-    'GET',
-    '/product/new',
-    [
-        'method' => 'displayNewProduct',
-        'controller' => '\App\Controllers\ProductController'
-    ],
-    'product-displayNewProduct'
-);
-
-$router->map(
-    'GET',
-    '/product/edit/[i:id]',
-    [
-        'method' => 'displayUpdateProduct',
-        'controller' => '\App\Controllers\ProductController'
-    ],
-    'product-displayUpdateProduct'
-);
-
-$router->map(
-    'POST',
-    '/product/update/[i:id]',
-    [
-        'method' => 'updateProduct',
-        'controller' => '\App\Controllers\ProductController'
-    ],
-    'product-updateProduct'
-);
-
-/* route pour inserer un nouveau produit */
-$router->map(
-    'POST',
-    '/product/new',
-    [
-        'method' => 'createProduct',
-        'controller' => '\App\Controllers\ProductController'
-    ],
-    'product-createProduct'
-);
-
-
-$router->map(
-    'GET',
-    '/type',
-    [
-        'method' => 'findType',
-        'controller' => '\App\Controllers\TypeController'
-    ],
-    'type-type-list'
-);
-
-$router->map(
-    'GET',
-    '/type/[i:id]',
-    [
-        'method' => 'findTypeById',
-        'controller' => '\App\Controllers\TypeController'
-    ],
-    'type-type-by-id'
-);
-
-$router->map(
-    'GET',
-    '/brand',
-    [
-        'method' => 'findBrand',
-        'controller' => '\App\Controllers\BrandController'
-    ],
-    'brand-brand-list'
-);
-
-$router->map(
-    'GET',
-    '/brand/[i:id]',
-    [
-        'method' => 'findBrandById',
-        'controller' => '\App\Controllers\BrandController'
-    ],
-    'brand-brand-by-id'
-);
-
-
-$router->map(
-    'GET',
-    '/tag',
-    [
-        'method' => 'findTag',
-        'controller' => '\App\Controllers\TagController'
-    ],
-    'tag-tag-list'
-);
-
-$router->map(
-    'GET',
-    '/tag/[i:id]',
-    [
-        'method' => 'findTagById',
-        'controller' => '\App\Controllers\TagController'
-    ],
-    'tag-tag-by-id'
-);
-
-/* -------------
---- DISPATCH ---
---------------*/
 
 // On demande à AltoRouter de trouver une route qui correspond à l'URL courante
 $match = $router->match();

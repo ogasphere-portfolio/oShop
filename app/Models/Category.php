@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Utils\Database;
 use PDO;
+use App\core\CoreModel;
+use App\Utils\Database;
 
 class Category extends CoreModel {
 

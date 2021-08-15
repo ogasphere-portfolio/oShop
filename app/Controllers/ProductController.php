@@ -8,6 +8,7 @@ use App\Models\Type;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
+use App\core\CoreController;
 
 
 
@@ -49,11 +50,17 @@ class ProductController extends CoreController {
         // On recupere le contenu d'un produit via son id
 
         // On l'envoie vers la vue
-        $product = Product::find($id);
+        $productToUpdate = Product::find($id);
 
-        if($product) {
+        $categories = Category::find($productToUpdate->getCategoryId());
+        $brands = Brand::find($productToUpdate->getBrandId());
+        $types = Type::find($productToUpdate->getTypeId());
+        if($productToUpdate) {
             $this->show('product/productForm', [
-                'product' => $product,
+                'product' => $productToUpdate,
+                'categories' => $categories,
+                'brands' => $brands,
+                'types' => $types,
             ]);
         } else {
             dd('Id non trouvée dans la BDD');
@@ -84,6 +91,32 @@ class ProductController extends CoreController {
         $result = $newProduct->insert();
         header('location: ' . $router->generate('product-products'));
 
+    }
+    public function updateProduct($id)
+    {
+        global $router;
+
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+        $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_STRING);
+        $categoryId = filter_input(INPUT_POST, 'idCategory', FILTER_SANITIZE_STRING);
+        $typeId = filter_input(INPUT_POST, 'idType', FILTER_SANITIZE_STRING);
+        $brandId = filter_input(INPUT_POST, 'idBrand', FILTER_SANITIZE_STRING);
+        $picture = filter_input(INPUT_POST, 'picture', FILTER_SANITIZE_STRING);
+        
+        $productToUpdate = Product::find($id);
+
+        $productToUpdate->setName($name);
+        $productToUpdate->setDescription($description);
+        $productToUpdate->setPrice($price);
+        $productToUpdate->setCategoryId($categoryId);
+        $productToUpdate->setTypeId($typeId);
+        $productToUpdate->setBrandId($brandId);
+        $productToUpdate->setPicture($picture);
+        $productToUpdate->update();
+        header('location: ' . $router->generate('product-products'));
+        
+        //header('location: ' . $router->generate('product-updateProductForm', ['id' => $productToUpdate->getId()]));
     }
 }
 

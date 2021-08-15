@@ -2,7 +2,7 @@
     <a href="<?= $router->generate('product-products') ?>" class="btn btn-success float-right">Retour</a>
     <h2><?= isset($product) ? 'Modifier' : 'Ajouter' ?> un produit</h2>
 
-    <form action="" method="POST" class="mt-5">
+    <form action="<?= isset($category) ? $router->generate('product-updateProduct', ['id' => $product->getId()])  : $router->generate('product-createProduct')  ?>" method="POST" class="mt-5">
         <div class="form-group ">
             <input type="hidden" class="form-control" id="id" name="id" value="<?= isset($product) ?  $product->getId() : '' ?>">
         </div>
@@ -11,14 +11,14 @@
             <input type="text" class="form-control" id="name" name="name" value="<?= isset($product) ?  $product->getName() : '' ?>">
         </div>
         <div class="form-group">
-            <label for="subtitle">Description</label>
-            <input value="Ceci est un produit" type="text" class="form-control" name="description" id="subtitle" placeholder="" value="<?= isset($product) ? $product->getDescription() : '' ?>" aria-describedby="subtitleHelpBlock">
+            <label for="description">Description</label>
+            <input value="Ceci est un produit" type="text" class="form-control" name="description" id="description" placeholder="" value="<?= isset($product) ? $product->getDescription() : '' ?>" aria-describedby="subtitleHelpBlock">
 
         </div>
 
         <div class="form-group">
-                    <label for="picture">Prix</label>
-                    <input type="text" class="form-control" name="price" id="picture" placeholder="" value="<?= isset($product) ?  $product->getPrice() : '' ?>" aria-describedby="pictureHelpBlock">
+                    <label for="price">Prix</label>
+                    <input type="text" class="form-control" name="price" id="price" placeholder="" value="<?= isset($product) ?  $product->getPrice() : '' ?>" aria-describedby="pictureHelpBlock">
                 </div>
         <div class="form-group">
             <label for="rate">Note</label>
@@ -32,12 +32,12 @@
             </small>
         </div>
 
-        // todo afficher les bonnes marques types et categories en mode modification
+        
         <div class="form-group">
                     <label for="idType">Type</label>
                     <select name="idType" id="idType">
                         <?php foreach($types as $type): ?>
-                            <option value="<?= $type->getId() ?>"><?= $type->getName() ?></option>
+                            <option value="<?= $type->getId() ?>" <?= $type->getId() == $products->getTypeId()? 'selected': '' ?>><?= $type->getName() ?></option>
                         <?php endforeach ; ?>
                     </select>
                 </div>
@@ -45,7 +45,7 @@
                     <label for="idCategory">Category</label>
                     <select name="idCategory" id="idCategory">
                         <?php foreach($categories as $category): ?>
-                            <option value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
+                            <option value="<?= $category->getId() ?>" <?= $category->getId() == $products->getCategoryId()? 'selected': '' ?>><?= $category->getName() ?></option>
                         <?php endforeach ; ?>
                     </select>
                 </div>
@@ -53,15 +53,14 @@
                     <label for="idBrand">Marque</label>
                     <select name="idBrand" id="idBrand">
                         <?php foreach($brands as $brand): ?>
-                            <option value="<?= $brand->getId() ?>"><?= $brand->getName() ?></option>
+                            <option value="<?= $brand->getId() ?>" <?= $brand->getId() == $products->getBrandId()? 'selected': '' ?>><?= $brand->getName() ?></option>
                         <?php endforeach ; ?>
                     </select>
                 </div>          
 
 
 
-
-        
+                
 
         <button type="submit" class="btn btn-primary btn-block mt-5">Valider</button>
     </form>

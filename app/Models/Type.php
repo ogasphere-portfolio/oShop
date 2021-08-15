@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Utils\Database;
 use PDO;
+use App\core\CoreModel;
+use App\Utils\Database;
 
 /**
  * Un modèle représente une table (un entité) dans notre base
