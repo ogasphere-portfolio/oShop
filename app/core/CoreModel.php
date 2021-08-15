@@ -57,32 +57,38 @@ abstract class CoreModel
         // Todo tentative de mise en place d'un insert dynamique
         
         $pdo = Database::getPDO();
-        $fields_list="";
-        $value_list="";
+        $fields_list = "";
+        $value_list = "";
+        $execute_list = [];
         // on recupere le nom des colonnes de la table $table
         // todo trouver un moyen de verifier les attributs auto-increment et timestamp pour ne pas les inclure dans la requete
         $columns = $this->getColumnNames($table);
         $cpt = 0;
         foreach ($columns as $col) {
            $cpt++;
-           
+           $colUpperFirst = \ucfirst($col);
            if ($cpt == 1) {
             $fields_list = "({$col}," ;
-            $value_list = "[:{$col}" ;
-
+            $value_list = "(:{$col}" ;
+            $execute_list[':'.$col] = '$this->get'.$colUpperFirst.',';
+            
            } else {
             $fields_list = "{$fields_list},{$col}";
             $value_list = "{$value_list},:{$col}";
+            $execute_list[':'.$col] = '$this->get'.$colUpperFirst.',';
            }
           
         }
         //on ferme la parenthese
         $fields_list = "{$fields_list})";   // pour la table produit $fields_list vaut : "(id,,name,subtitle,picture,home_order,created_at,updated_at)"
         
-        // on ferme les crochets
-        $value_list = "{$value_list}]"; // pour la table produit $value_list vaut : [:id,:name,:subtitle,:picture,:home_order,:created_at,:updated_at]"
+        // on ferme la parenthese
+        $value_list = "{$value_list})"; // pour la table produit $value_list vaut : [:id,:name,:subtitle,:picture,:home_order,:created_at,:updated_at]"
+        
        
-
+        dd($execute_list);
+        
+      
        
         
         $sql = "
@@ -91,15 +97,12 @@ abstract class CoreModel
 
 
         $request = $pdo->prepare($sql);
-        dd($request);
+       echo($sql);
+        dd($sql);
         // todo dynamiser l' execution avec $columns et $table
         // todo creer la chaine de caracteres à passer à execute() à faire dans le for each au dessus
-        $insertedRows = $request->execute([
-            ':name' => $table->getName(),
-            ':subtitle' => $table->getSubtitle(),
-            ':picture' => $table->getPicture()
-        ]);
-
+        $insertedRows = $request->execute($execute_list);
+        dd($sql);
         // Si au moins une ligne ajoutée
         if ($insertedRows > 0) {
             // Alors on récupère l'id auto-incrémenté généré par MySQL
