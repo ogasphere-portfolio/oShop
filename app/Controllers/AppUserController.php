@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 
+
 use App\Models\AppUser;
 use App\core\CoreController;
 
@@ -104,7 +105,7 @@ class AppUserController extends CoreController {
 
        
         // J'instancie une nouvelle categorie vide
-        $newCategory = new Appuser();
+        $newUser = new Appuser();
 
         // Je remplis ma categorie avec les données du formulaire
         $newUser->setEmail($email);
@@ -117,9 +118,9 @@ class AppUserController extends CoreController {
 
         // Inserer le contenu du formulaire en BDD
         // todo a remodifier en insert() apres les test
-        $newCategory->testInsert('category');
+        $newUser->Insert('user');
 
-        header('location: ' . $router->generate('category-categories'));
+        header('location: ' . $router->generate('user-users'));
 
         // Rediriger vers une page pertinente
 
@@ -139,11 +140,10 @@ class AppUserController extends CoreController {
         $newStatus = filter_input(INPUT_POST, 'status', \FILTER_SANITIZE_NUMBER_INT);
 
         
-        //je récupère l'id de la catégorie qu'on veut modifier
-        $findCategoryById = AppUser::find($userId);
-        //$categoryId = $findCategoryById->getId();
+        //je récupère l'id du user qu'on veut modifier
+        $findUserById = AppUser::find($userId);
+       
         
-        //$category = new Category();
         // je définis les nouvelles données via nos setter correspondants
         $findUserById->setEmail($newEmail);
         $findUserById->setPassword($newPassword);
@@ -156,7 +156,7 @@ class AppUserController extends CoreController {
 
 
         
-        // j'envoie la méthode update pour mettre à jour la BDD et je redirige vers la liste des catégories mise à jour.
+        // j'envoie la méthode update pour mettre à jour la BDD et je redirige vers la liste des Users mis à jour.
         $findUserById->save();
         header('Location: ' . $router->generate('user-users'));
 
