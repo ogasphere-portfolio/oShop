@@ -61,6 +61,9 @@ class AppUserController extends CoreController {
     
     public function users()
     {
+        $this->checkAuthorization([
+            'admin',
+        ]);
         // Je veux recuperer le liste de toutes les categories
         // sous la forme d'un tableau d'objets
         $users = AppUser::findAll();
@@ -72,11 +75,18 @@ class AppUserController extends CoreController {
 
     public function displayNewUser()
     {
+        $this->checkAuthorization([
+            'admin',
+        ]);
         $this->show('user/userForm');
     }
 
     public function displayUpdateUser($id)
     {
+
+        $this->checkAuthorization([
+            'admin',
+        ]);
         // On recupere le contenu d'un produit via son id
 
         // On l'envoie vers la vue
@@ -94,6 +104,11 @@ class AppUserController extends CoreController {
     public function createUser()
     {
         global $router;
+
+        $this->checkAuthorization([
+            'admin',
+        ]);
+
         // Recuperer le contenu du formulaire
         // Valider le contenu du formulaire
         $email = filter_input(INPUT_POST, 'email', \FILTER_SANITIZE_EMAIL);
@@ -131,6 +146,10 @@ class AppUserController extends CoreController {
     {
         global $router;
 
+        $this->checkAuthorization([
+            'admin',
+        ]);
+
         //je récupère les données entrées dans le formulaire
         $newEmail = filter_input(INPUT_POST, 'email', \FILTER_SANITIZE_EMAIL);
         $newPassword = filter_input(INPUT_POST, 'password', \FILTER_SANITIZE_STRING);
@@ -160,5 +179,11 @@ class AppUserController extends CoreController {
         $findUserById->save();
         header('Location: ' . $router->generate('user-users'));
 
+    }
+    public function delete($userId)
+    {
+        $this->checkAuthorization([
+            'admin',
+        ]);
     }
 }

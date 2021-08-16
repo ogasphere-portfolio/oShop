@@ -22,6 +22,10 @@ class ProductController extends CoreController {
      */
     public function products()
     {
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
         $products = Product::findAll();
 
         $this->show('product/products', [
@@ -31,6 +35,11 @@ class ProductController extends CoreController {
 
     public function displayNewProduct()
     {
+
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
          // Je recupere la liste de tout type, category et brand
          $categories = Category::findAll();
          $brands = Brand::findAll();
@@ -47,6 +56,10 @@ class ProductController extends CoreController {
 
     public function displayUpdateProduct($id)
     {
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
         // On recupere le contenu d'un produit via son id
 
         // On l'envoie vers la vue
@@ -72,6 +85,11 @@ class ProductController extends CoreController {
     {
         global $router;
 
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
+
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
         $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_STRING);
@@ -86,7 +104,7 @@ class ProductController extends CoreController {
         $newProduct->setPrice($price);
         $newProduct->setCategoryId($categoryId);
         $newProduct->setTypeId($typeId);
-        
+
         $newProduct->setBrandId($brandId);
 
         $result = $newProduct->insert();
@@ -96,6 +114,11 @@ class ProductController extends CoreController {
     public function updateProduct($id)
     {
         global $router;
+
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
 
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
@@ -118,6 +141,15 @@ class ProductController extends CoreController {
         header('location: ' . $router->generate('product-products'));
         
         //header('location: ' . $router->generate('product-updateProductForm', ['id' => $productToUpdate->getId()]));
+    }
+
+    public function delete()
+    {
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
+
     }
 }
 

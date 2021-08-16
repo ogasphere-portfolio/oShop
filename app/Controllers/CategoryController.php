@@ -21,6 +21,10 @@ class CategoryController extends CoreController
      */
     public function categories()
     {
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
         // Je veux recuperer le liste de toutes les categories
         // sous la forme d'un tableau d'objets
         $categories = Category::findAll();
@@ -32,11 +36,19 @@ class CategoryController extends CoreController
 
     public function displayNewCategory()
     {
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
         $this->show('category/categoryForm');
     }
 
     public function displayUpdateCategory($id)
     {
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
         // On recupere le contenu d'un produit via son id
 
         // On l'envoie vers la vue
@@ -54,6 +66,12 @@ class CategoryController extends CoreController
     public function createCategory()
     {
         global $router;
+
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
+
         // Recuperer le contenu du formulaire
         // Valider le contenu du formulaire
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
@@ -83,6 +101,11 @@ class CategoryController extends CoreController
     public function updateCategory($categoryId)
     {
         global $router;
+
+        $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]);
 
         //je récupère les données entrées dans le formulaire
         $newName = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
