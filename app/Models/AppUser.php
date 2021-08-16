@@ -89,7 +89,7 @@ class AppUser extends CoreModel
 
         $insertedRows = $request->execute([
             ':email' => $this->getEmail(),
-            ':password' => $this->getPassword(),
+            ':password' => \password_hash($this->password, \PASSWORD_DEFAULT ),
             ':firstname' => $this->getFirstname(),
             ':lastname' => $this->getLastname(),
             ':role' => $this->getRole(),
@@ -139,7 +139,7 @@ class AppUser extends CoreModel
         // Execution de la requête de mise à jour (exec, pas query)
         $updatedRows = $request->execute([
             ':email' => $this->email,        
-            ':password' => $this->password,
+            ':password' => \password_hash($this->password, \PASSWORD_DEFAULT ),
             ':firstname' => $this->firstname,
             ':lastname' => $this->lastname,
             ':role' => $this->role,

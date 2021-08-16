@@ -22,10 +22,13 @@ class ProductController extends CoreController {
      */
     public function products()
     {
-        $this->checkAuthorization([
+        // on ne fait pas de verification de connexion pour l'affichage des produits
+        // Un utilisateur non connecté peut voir les produits
+        /* $this->checkAuthorization([
             'admin',
             'catalog-manager'
-        ]);
+        ]); */
+        
         $products = Product::findAll();
 
         $this->show('product/products', [
