@@ -62,16 +62,16 @@ class AppUserController extends CoreController {
     {
         // Je veux recuperer le liste de toutes les categories
         // sous la forme d'un tableau d'objets
-        $Users = AppUser::findAll();
+        $users = AppUser::findAll();
 
-        $this->show('category/categories', [
-            'categories' => $categories,
+        $this->show('user/users', [
+            'users' => $users,
         ]);
     }
 
     public function displayNewUser()
     {
-        $this->show('category/categoryForm');
+        $this->show('user/userForm');
     }
 
     public function displayUpdateUser($id)
@@ -79,11 +79,11 @@ class AppUserController extends CoreController {
         // On recupere le contenu d'un produit via son id
 
         // On l'envoie vers la vue
-        $category = Category::find($id);
+        $user = AppUser::find($id);
 
-        if ($category) {
-            $this->show('category/categoryForm', [
-                'category' => $category,
+        if ($user) {
+            $this->show('user/userForm', [
+                'user' => $user,
             ]);
         } else {
             dd('Id non trouvée dans la BDD');
@@ -95,18 +95,25 @@ class AppUserController extends CoreController {
         global $router;
         // Recuperer le contenu du formulaire
         // Valider le contenu du formulaire
-        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-        $subtitle = filter_input(INPUT_POST, 'subtitle', FILTER_SANITIZE_STRING);
-        $picture = filter_input(INPUT_POST, 'picture', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', \FILTER_SANITIZE_EMAIL);
+        $password = filter_input(INPUT_POST, 'password', \FILTER_SANITIZE_STRING);
+        $firstname = filter_input(INPUT_POST, 'firstname', \FILTER_SANITIZE_STRING);
+        $lastname = filter_input(INPUT_POST, 'lastname', \FILTER_SANITIZE_STRING);
+        $role = filter_input(INPUT_POST, 'role', \FILTER_SANITIZE_STRING);
+        $status = filter_input(INPUT_POST, 'status', \FILTER_SANITIZE_NUMBER_INT);
 
        
         // J'instancie une nouvelle categorie vide
-        $newCategory = new Category();
+        $newCategory = new Appuser();
 
         // Je remplis ma categorie avec les données du formulaire
-        $newCategory->setName($name);
-        $newCategory->setSubtitle($subtitle);
-        $newCategory->setPicture($picture);
+        $newUser->setEmail($email);
+        $newUser->setPassword($password);
+        $newUser->setFirstname($firstname);
+        $newUser->setLastname($lastname);
+        $newUser->setRole($role);
+        $newUser->setStatus($status);
+
 
         // Inserer le contenu du formulaire en BDD
         // todo a remodifier en insert() apres les test
@@ -119,28 +126,39 @@ class AppUserController extends CoreController {
 
     }
 
-    public function updateUser($categoryId)
+    public function updateUser($userId)
     {
         global $router;
 
         //je récupère les données entrées dans le formulaire
-        $newName = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
-        $newSubtitle = filter_input(INPUT_POST, "subtitle", FILTER_SANITIZE_STRING);
-        $newPicture = filter_input(INPUT_POST, "picture", FILTER_SANITIZE_STRING);
+        $newEmail = filter_input(INPUT_POST, 'email', \FILTER_SANITIZE_EMAIL);
+        $newPassword = filter_input(INPUT_POST, 'password', \FILTER_SANITIZE_STRING);
+        $newFirstname = filter_input(INPUT_POST, 'firstname', \FILTER_SANITIZE_STRING);
+        $newLastname = filter_input(INPUT_POST, 'lastname', \FILTER_SANITIZE_STRING);
+        $newRole = filter_input(INPUT_POST, 'role', \FILTER_SANITIZE_STRING);
+        $newStatus = filter_input(INPUT_POST, 'status', \FILTER_SANITIZE_NUMBER_INT);
+
         
         //je récupère l'id de la catégorie qu'on veut modifier
-        $findCategoryById = Category::find($categoryId);
+        $findCategoryById = AppUser::find($userId);
         //$categoryId = $findCategoryById->getId();
         
         //$category = new Category();
         // je définis les nouvelles données via nos setter correspondants
-        $findCategoryById->setName($newName);
-        $findCategoryById->setSubtitle($newSubtitle);
-        $findCategoryById->setPicture($newPicture);
+        $findUserById->setEmail($newEmail);
+        $findUserById->setPassword($newPassword);
+        $findUserById->setFirstname($newFirstname);
+        $findUserById->setLastname($newLastname);
+        $findUserById->setRole($newRole);
+        $findUserById->setStatus($newStatus);
+
+
+
+
         
         // j'envoie la méthode update pour mettre à jour la BDD et je redirige vers la liste des catégories mise à jour.
-        $findCategoryById->save();
-        header('Location: ' . $router->generate('category-categories'));
+        $findUserById->save();
+        header('Location: ' . $router->generate('user-users'));
 
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-use App\Models\CoreModel;
+use App\core\CoreModel;
+
+
 
     $name = CoreModel::valid_donnees($_POST["name"]);
     $subtitle = CoreModel::valid_donnees($_POST["subtitle"]);
