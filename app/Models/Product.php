@@ -201,6 +201,11 @@ class Product extends CoreModel {
         return false;
 
     }
+
+    public function delete()
+    {
+
+    }
     /**
      * Get the value of name
      *

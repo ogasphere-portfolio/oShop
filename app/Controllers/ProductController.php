@@ -86,6 +86,7 @@ class ProductController extends CoreController {
         $newProduct->setPrice($price);
         $newProduct->setCategoryId($categoryId);
         $newProduct->setTypeId($typeId);
+        
         $newProduct->setBrandId($brandId);
 
         $result = $newProduct->insert();

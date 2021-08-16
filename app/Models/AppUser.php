@@ -16,26 +16,29 @@ class AppUser extends CoreModel
     private $role;
     private $status;
 
-    public static function findByEmail($email)
+    
+    public static function findByEmail(string $email): ?self
     {
+        // Recuperation connexion BDD
         $pdo = Database::getPDO();
 
-        $sql = "SELECT * FROM `app_user` WHERE `email`= '{$email}'";
-        
+        // Preparation de la requete avec placeholder
+        $sql = '
+            SELECT * FROM `app_user` WHERE email = :email;
+        ';
+        $request = $pdo->prepare($sql);
 
-        $pdoStatement = $pdo->query($sql);
-        $userInfos = $pdoStatement->fetchObject('App\Models\AppUser');
+        // Execution de la requete en remplacant les placeholders par
+        // les parametres
+        $result = $request->execute([
+            ':email' => $email
+        ]);
 
-        if (isset($userInfos)) {
-        
-            
-            return $userInfos;
-
-        } else {
-           
-            return false;
+        if($result) {
+            return $request->fetchObject('App\Models\AppUser');
         }
-        
+        return false;
+
     }
 
     public static function find($id)

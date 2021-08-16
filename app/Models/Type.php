@@ -30,6 +30,20 @@ class Type extends CoreModel {
      * @param int $typeId ID du type
      * @return Type
      */
+
+    public function insert()
+    {
+        # code...
+    }
+    public function update()
+    {
+        # code...
+    }
+    public function delete()
+    {
+        # code...
+    }
+
     public static function find($typeId)
     {
         // se connecter à la BDD

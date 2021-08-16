@@ -9,7 +9,7 @@ use App\Models\CoreModel;
     $created_at = CoreModel::valid_donnees($_POST["created_at"]);
     $updated_at = CoreModel::valid_donnees($_POST["updated_at"]);
     
-    die();
+   
     
     /*Si les champs prenom et mail ne sont pas vides et si les donnees ont
      *bien la forme attendue...*/

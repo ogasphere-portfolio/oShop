@@ -193,20 +193,20 @@ $router->map(
 
 $router->map(
     'GET',
-    '/connexion',
+    '/connexion/login',
     [
         'method' => 'connexion',
-        'controller' => '\App\Controllers\UserController'
+        'controller' => '\App\Controllers\AppUserController'
     ],
     'user-connexion'
 );
 
 $router->map(
     'POST',
-    '/connexion',
+    '/connexion/login',
     [
         'method' => 'connexionControl',
-        'controller' => '\App\Controllers\UserController'
+        'controller' => '\App\Controllers\AppUserController'
     ],
     'user-connexion-control'
 );
@@ -215,7 +215,48 @@ $router->map(
     '/deconnexion',
     [
         'method' => 'disconnect',
-        'controller' => '\App\Controllers\UserController'
+        'controller' => '\App\Controllers\AppUserController'
     ],
     'user-disconnect'
+);
+
+// Routes pour les utilisateurs
+$router->map(
+    'GET',
+    '/user/edit/[i:id]',
+    [
+        'method' => 'displayUpdateUser',
+        'controller' => '\App\Controllers\AppUserController'
+    ],
+    'user-displayUpdateUser'
+);
+
+$router->map(
+    'GET',
+    '/user/new',
+    [
+        'method' => 'displayNewUser',
+        'controller' => '\App\Controllers\AppUserController'
+    ],
+    'user-displayNewUser'
+);
+$router->map(
+    'POST',
+    '/user/update/[i:id]',
+    [
+        'method' => 'updateUser',
+        'controller' => '\App\Controllers\AppUserController'
+    ],
+    'user-updateUser'
+);
+
+/* route pour inserer une nouvelle categorie */
+$router->map(
+    'POST',
+    '/user/new',
+    [
+        'method' => 'createUser',
+        'controller' => '\App\Controllers\AppUserController'
+    ],
+    'user-createUser'
 );

@@ -147,7 +147,11 @@ class Brand extends CoreModel {
         // On retourne VRAI, si au moins une ligne ajoutée
         return ($updatedRows > 0);
     }
-
+    
+    public function delete()
+    {
+        # code...
+    }
     /**
      * Get the value of name
      *

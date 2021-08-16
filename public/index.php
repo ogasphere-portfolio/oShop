@@ -8,13 +8,15 @@
 // mais aussi d'activer le chargement automatique des classes (convention PSR-4)
 require_once '../vendor/autoload.php';
 
+// le session_start() doit toujours etre aprés le require AutoLoad
+session_start();
 
 // création de l'objet router
 // Cet objet va gérer les routes pour nous, et surtout il va 
 $router = new AltoRouter();
 
 // Appel du fichier qui contient toutes les routes
-require '../app/Utils/routes.php';
+require '../app/Utils/Routes.php';
 
 // le répertoire (après le nom de domaine) dans lequel on travaille est celui-ci
 // Mais on pourrait travailler sans sous-répertoire

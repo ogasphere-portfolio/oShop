@@ -139,50 +139,41 @@ class Category extends CoreModel {
      * 
      * @return bool
      */
-    public function update($id)
+    public function update()
     {
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
 
+        // Ecriture de la requête UPDATE
+        $sql = "
+            UPDATE `category`
+            SET
+                name=:name,
+                subtitle=:subtitle,
+                picture=:picture
+            WHERE id=:id
+        ";
 
-        $request = $pdo->prepare("UPDATE `category` SET
-            name = '{$this->name}',
-            subtitle = {$this->subtitle},
-            updated_at = NOW(),
-            picture = '{$this->picture}',
-            home_order = '{$this->home_order}',
-        WHERE id = {$id}");
-
-
-
-        $insertedRows = $request->execute([
-            ':name' => $this->getName(),
-            ':subtitle' => $this->getSubtitle(),
-            ':updated_at' => $this->getUpdatedAt(),
-            ':picture' => $this->getPicture(),
-            ':home_order' => $this->getHomeOrder(),
+        $request = $pdo->prepare($sql);
+        // Execution de la requête de mise à jour (exec, pas query)
+        $updatedRows = $request->execute([
+            ':name' => $this->name,
+            ':subtitle' => $this->subtitle,
+            ':picture' => $this->picture,
+            ':id' => $this->id,
         ]);
 
-        // Si au moins une ligne ajoutée
-        if ($insertedRows > 0) {
-            // Alors on récupère l'id auto-incrémenté généré par MySQL
-            $this->id = $pdo->lastInsertId();
-
-            // On retourne VRAI car l'ajout a parfaitement fonctionné
-            return true;
-            // => l'interpréteur PHP sort de cette fonction car on a retourné une donnée
-        }
-
-        // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
-        return false;
-
-        // Execution de la requête de mise à jour (exec, pas query)
-       
-
-       
+    
+        // On retourne VRAI, si au moins une ligne ajoutée
+    return ($updatedRows > 0);
+        
     }
 
 
+    public function delete()
+    {
+
+    }
     /**
      * Get the value of name
      *

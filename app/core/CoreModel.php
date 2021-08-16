@@ -26,6 +26,28 @@ abstract class CoreModel
 
     private $column_names;
 
+    // ici, tous les enfants de cette classe devront déclarer une méthode insert et une méthode update
+    // protected est une convention, on mettra toujours protected, pas public, ni static, ni private
+    abstract protected function insert();
+    abstract protected function update();
+    abstract static protected function find($id);
+    abstract static protected function findAll();
+    abstract protected function delete();
+
+    public function save()
+    {
+        if(null !== $this->getId() && $this->getId() > 0) {
+
+            $this->update();
+
+        } else {
+
+            $this->insert();
+        }
+
+
+    }
+
     public function getColumnNames($table)
     {
         // Méthode pour récuprer le nom des colonnes de $table
@@ -46,7 +68,7 @@ abstract class CoreModel
                     }
                 }
             }
-            return $this->column_names;
+            return $this->column_names;  // on retourne toutes les colonnes de la table passé en parametres
         } catch (Exception $e) {
             return $e->getMessage(); //return exception 
         }
@@ -57,52 +79,56 @@ abstract class CoreModel
         // Todo tentative de mise en place d'un insert dynamique
         
         $pdo = Database::getPDO();
-        $fields_list = "";
+        dd($this)
+;        $fields_list = "";
         $value_list = "";
         $execute_list = [];
+       
         // on recupere le nom des colonnes de la table $table
         // todo trouver un moyen de verifier les attributs auto-increment et timestamp pour ne pas les inclure dans la requete
         $columns = $this->getColumnNames($table);
         $cpt = 0;
         foreach ($columns as $col) {
            $cpt++;
-           $colUpperFirst = \ucfirst($col);
+           $colUpperFirst = \ucfirst($col); // on passe la premiere lettre du champ en majuscule: getname devient getName
+
            if ($cpt == 1) {
-            $fields_list = "({$col}," ;
-            $value_list = "(:{$col}" ;
-            $execute_list[':'.$col] = '$this->get'.$colUpperFirst.',';
-            
+                $fields_list = "({$col}," ;
+                $value_list = "(:{$col}" ;
+
+                // Premiere ligne du tableau associatif qui sera passé en parametre à execute()
+                $execute_list[':'.$col] = '$this->get'.$colUpperFirst.',';
+           
            } else {
-            $fields_list = "{$fields_list},{$col}";
-            $value_list = "{$value_list},:{$col}";
-            $execute_list[':'.$col] = '$this->get'.$colUpperFirst.',';
+                $fields_list = "{$fields_list},{$col}"; // liste des champs de la requete
+                $value_list = "{$value_list},:{$col}"; // liste des Value de la requete
+
+                $methodName = 'get'.$colUpperFirst;
+                // les autres lignes du tableau associatif qui sera passé en parametre à execute()
+                $execute_list[':'.$col] = $this->$methodName();
            }
           
         }
         //on ferme la parenthese
-        $fields_list = "{$fields_list})";   // pour la table produit $fields_list vaut : "(id,,name,subtitle,picture,home_order,created_at,updated_at)"
+        $fields_list = "{$fields_list})";   // ex:pour la table produit $fields_list vaut : "(id,,name,subtitle,picture,home_order,created_at,updated_at)"
         
         // on ferme la parenthese
-        $value_list = "{$value_list})"; // pour la table produit $value_list vaut : [:id,:name,:subtitle,:picture,:home_order,:created_at,:updated_at]"
+        $value_list = "{$value_list})"; // ex :pour la table produit $value_list vaut : (:id,:name,:subtitle,:picture,:home_order,:created_at,:updated_at)"
         
        
         dd($execute_list);
         
-      
-       
-        
+        // on remplit la requete avec les valeurs dynamiques
         $sql = "
             INSERT INTO `{$table}` {$fields_list}
             VALUES $value_list";
 
 
         $request = $pdo->prepare($sql);
-       echo($sql);
-        dd($sql);
-        // todo dynamiser l' execution avec $columns et $table
-        // todo creer la chaine de caracteres à passer à execute() à faire dans le for each au dessus
+       
+        
         $insertedRows = $request->execute($execute_list);
-        dd($sql);
+       
         // Si au moins une ligne ajoutée
         if ($insertedRows > 0) {
             // Alors on récupère l'id auto-incrémenté généré par MySQL

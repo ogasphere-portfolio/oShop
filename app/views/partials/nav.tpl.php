@@ -30,10 +30,15 @@
                         <a class="nav-link" href="#">Sélections Accueil &amp; Footer</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Rechercher">
-                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Rechercher</button>
-                </form>
+                  <!-- Si on est connecté -->
+                  <?php if(isset($_SESSION['connectedUser']) && $_SESSION['connectedUser'] !== ''): ?>
+                    <!-- On affiche le firstname de l'utilisateur -->
+                    <span class="nav-link"><?= $_SESSION['connectedUser']->getFirstname() ?></span>
+                    <a class="nav-link" href="<?=$router->generate('user-disconnect') ?>">Deconnexion</a>
+                <?php else: ?>
+                    <!-- Lien vers formulaire de connexion -->
+                    <a class="nav-link" href="<?=$router->generate('user-connexion') ?>">Connexion</a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>

@@ -1,41 +1,80 @@
 <?php
-
 namespace App\Controllers;
 
-use DateTime;
-use App\Models\Category;
+use App\Models\AppUser;
 use App\core\CoreController;
 
 
 
 
 
+class AppUserController extends CoreController {
 
-class CategoryController extends CoreController
-{
+    
+    
+    public function connexion()
+    {
+        
+        $this->show('connexion/login');
+    }
 
-    /**
-     * Méthode s'occupant de la page d'accueil
-     *
-     * @return void
-     */
-    public function categories()
+    public function connexionControl()
+    {
+        
+       global $router;
+        $email = filter_input(INPUT_POST, "email");
+        $password = filter_input(INPUT_POST, "password");
+
+        // Recuperation de l'utilisateur via son email
+        $connectedUser = AppUser::findByEmail($email);
+
+        if($connectedUser) {
+            // Comparer le mdp avec celui lié au compte
+            if(password_verify($password, $connectedUser->getPassword())) {
+                // On ajoute en session l'objet de l'utilisateur connecté
+                $_SESSION['connectedUser'] = $connectedUser;
+                // On redirige vers l'accueil
+                header('Location:' . $router->generate('main-home'));
+            } else {
+                $_SESSION['errorMessage'] = "ERREUR DE CONNEXION MDP";
+                header('Location:' . $router->generate('user-connexion'));
+            }
+
+        } else {
+            $_SESSION['errorMessage'] = "ERREUR DE CONNEXION";
+            header('Location:' . $router->generate('user-connexion'));
+        }
+    }
+
+    public function disconnect()
+    {
+       // suppression du connectedUser , deconnecte l'utilisateur
+        unset($_SESSION['connectedUser']); 
+
+        global $router;
+        // Redirection vers la page de connexion
+        header('Location:' . $router->generate('user-connexion'));
+        return;
+
+    }
+    
+    public function users()
     {
         // Je veux recuperer le liste de toutes les categories
         // sous la forme d'un tableau d'objets
-        $categories = Category::findAll();
+        $Users = AppUser::findAll();
 
         $this->show('category/categories', [
             'categories' => $categories,
         ]);
     }
 
-    public function displayNewCategory()
+    public function displayNewUser()
     {
         $this->show('category/categoryForm');
     }
 
-    public function displayUpdateCategory($id)
+    public function displayUpdateUser($id)
     {
         // On recupere le contenu d'un produit via son id
 
@@ -51,7 +90,7 @@ class CategoryController extends CoreController
         }
     }
 
-    public function createCategory()
+    public function createUser()
     {
         global $router;
         // Recuperer le contenu du formulaire
@@ -80,7 +119,7 @@ class CategoryController extends CoreController
 
     }
 
-    public function updateCategory($categoryId)
+    public function updateUser($categoryId)
     {
         global $router;
 
