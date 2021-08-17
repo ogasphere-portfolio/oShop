@@ -21,10 +21,7 @@ class CategoryController extends CoreController
      */
     public function categories()
     {
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
-        ]);
+       
         // Je veux recuperer le liste de toutes les categories
         // sous la forme d'un tableau d'objets
         $categories = Category::findAll();
@@ -36,18 +33,20 @@ class CategoryController extends CoreController
 
     public function displayNewCategory()
     {
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
+        $randToken = bin2hex(random_bytes(32));
+        $_SESSION['token'] = $randToken;
+        $this->show('category/categoryForm', [
+            'token' => $randToken
         ]);
-        $this->show('category/categoryForm');
+        
     }
 
     public function displayUpdateCategory($id)
     {
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
+        $randToken = bin2hex(random_bytes(32));
+        $_SESSION['token'] = $randToken;
+        $this->show('category/categoryForm', [
+            'token' => $randToken
         ]);
         // On recupere le contenu d'un produit via son id
 
@@ -65,12 +64,8 @@ class CategoryController extends CoreController
 
     public function createCategory()
     {
+       
         global $router;
-
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
-        ]);
 
         // Recuperer le contenu du formulaire
         // Valider le contenu du formulaire
@@ -88,11 +83,11 @@ class CategoryController extends CoreController
         $newCategory->setPicture($picture);
 
         // Inserer le contenu du formulaire en BDD
-        // todo a remodifier en insert() apres les test
-        $newCategory->testInsert('category');
-
-        header('location: ' . $router->generate('category-categories'));
-
+        
+        $newCategory->save();
+        
+;        header('location: ' . $router->generate('category-categories'));
+        exit();
         // Rediriger vers une page pertinente
 
 
@@ -100,12 +95,8 @@ class CategoryController extends CoreController
 
     public function updateCategory($categoryId)
     {
+       
         global $router;
-
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
-        ]);
 
         //je récupère les données entrées dans le formulaire
         $newName = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
@@ -125,6 +116,16 @@ class CategoryController extends CoreController
         // j'envoie la méthode update pour mettre à jour la BDD et je redirige vers la liste des catégories mise à jour.
         $findCategoryById->save();
         header('Location: ' . $router->generate('category-categories'));
+        exit();
 
+    }
+    public function deleteCategory($id)
+    {
+        
+        global $router;
+
+        Category::delete($id);
+        header('location: ' . $router->generate('category-categories'));
+        exit();
     }
 }

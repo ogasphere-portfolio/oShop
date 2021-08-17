@@ -202,9 +202,16 @@ class Product extends CoreModel {
 
     }
 
-    public function delete()
+    public static function delete($id)
     {
+        $pdo = Database::getPDO();
 
+        // écrire notre requête
+        $sql = 'DELETE FROM `product` WHERE `id` =' . $id;
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->exec($sql);
+        return $pdoStatement;
     }
     /**
      * Get the value of name

@@ -12,7 +12,76 @@ abstract class CoreController {
      * @param array $viewData Tableau des données à transmettre aux vues
      * @return void
      */
-  
+    
+    public function __construct()
+    {
+         // ACL
+         global $match;
+
+         // Recuperation du nom de la route
+         $routeName = $match['name'];
+ 
+         // Creation du tableau des permissions liées aux routes
+         $acl = [
+             //'auth-loginForm' => [],
+             //'auth-loginAction' => [],
+             //'auth-logout' => [],
+             'app-user-users' => ['admin'],
+             'app-user-newUser' => ['admin'],
+             'app-user-createUser' => ['admin'],
+             'main-home' => ['admin', 'catalog-manager'],
+             'category-categories' => ['admin', 'catalog-manager'],
+             'category-newCategory' => ['admin', 'catalog-manager'],
+             'category-createCategory' => ['admin', 'catalog-manager'],
+             'category-updateCategoryForm' => ['admin', 'catalog-manager'],
+             'category-updateCategoryAction' => ['admin', 'catalog-manager'],
+             'category-deleteCategoryAction' => ['admin', 'catalog-manager'],
+             'product-products' => ['admin', 'catalog-manager'],
+             'product-newProductForm' => ['admin', 'catalog-manager'],
+             'product-createProduct' => ['admin', 'catalog-manager'],
+             'product-updateProductForm' => ['admin', 'catalog-manager'],
+             'product-updateProductAction' => ['admin', 'catalog-manager'],
+             'product-deleteProductAction' => ['admin', 'catalog-manager']
+         ];
+ 
+         // On va devoir recuperer les roles liés a notre route courante
+         if(array_key_exists($routeName, $acl)) {
+             $authorizedRoles = $acl[$routeName];
+             $this->checkAuthorization($authorizedRoles);
+         }
+ 
+         //CSRF liste des routes devant recevoir un Token ( tous les formulaires)
+         $csrfTokenToCheck = [
+             'app-user-createUser',
+             'category-createCategory',
+             'category-updateCategoryAction',
+             'product-createProduct',
+             'product-updateProductAction'
+         ];
+        // Il faut verifier qu'on est sur une route ou on doit tester CSRF
+        // inarray verifie su une VALEUR existe contrairement à array_key_exists qui verifie l'existence d'une clé
+        if(in_array($routeName, $csrfTokenToCheck)) {
+            $formToken = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : '';
+            $sessionToken = isset($_SESSION['token']) ? $_SESSION['token'] : '';
+            // Verification que les token sont les mêmes
+            // Si les tokens sont differents
+            if($formToken !== $sessionToken || empty($formToken)) {
+               
+                header('HTTP/1.0 403 Forbidden');
+                // Puis on affiche la page d'erreur 403
+                $this->show('error/err403');
+                // Enfin on arrête le script pour que la page demandée ne s'affiche pas
+                exit();
+            }
+            // Si tout va bien, donc que les deux token sont egaux 
+            else {
+                // On enleve le token de la session
+                unset($_SESSION['token']);
+            }
+        }
+    }
+   
+
     protected function checkAuthorization($roles = [])
     {
         global $router;
@@ -20,14 +89,17 @@ abstract class CoreController {
         if(isset($_SESSION['connectedUser']) && $_SESSION['connectedUser'] !== '') {
             // Alors on récupère l'utilisateur connecté
             $currentUser = $_SESSION['connectedUser'];
-                
+           
             // Puis on récupère son role
             $currentUserRole = $currentUser->getRole();
+           
             // si le role fait partie des roles autorisées (fournis en paramètres)
             if(in_array($currentUserRole, $roles)) {
+                
                 // Alors on retourne vrai
                 return true;
             } else {
+              
                 // Sinon le user connecté n'a pas la permission d'accéder à la page
                 // => on envoie le header "403 Forbidden"
                 header('HTTP/1.0 403 Forbidden');

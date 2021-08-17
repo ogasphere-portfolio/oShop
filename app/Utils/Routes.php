@@ -20,6 +20,7 @@ $router->map('GET','/category/edit/[i:id]',['method' => 'displayUpdateCategory',
 $router->map('GET','/category/new',['method' => 'displayNewCategory','controller' => '\App\Controllers\CategoryController'],'category-displayNewCategory');
 $router->map('POST','/category/update/[i:id]',['method' => 'updateCategory','controller' => '\App\Controllers\CategoryController'],'category-updateCategory');
 $router->map('POST','/category/new',['method' => 'createCategory','controller' => '\App\Controllers\CategoryController'],'category-createCategory');
+$router->map('GET','/category/delete/[i:id]',['method' => 'deleteCategory','controller' => '\App\Controllers\CategoryController'],'category-deleteCategory');
 
 // Routes pour les produits
 $router->map('GET','/products',['method' => 'products','controller' => '\App\Controllers\ProductController'],'product-products');
@@ -29,15 +30,15 @@ $router->map('POST','/product/update/[i:id]',['method' => 'updateProduct','contr
 $router->map('POST','/product/new',['method' => 'createProduct','controller' => '\App\Controllers\ProductController'],'product-createProduct');
 
 // Routes pour les Types
-$router->map('GET','/type',['method' => 'findType','controller' => '\App\Controllers\TypeController'],'type-type-list');
+$router->map('GET','/type',['method' => 'findType','controller' => '\App\Controllers\TypeController'],'type-types');
 $router->map('GET','/type/[i:id]',['method' => 'findTypeById','controller' => '\App\Controllers\TypeController'],'type-type-by-id');
 
 // Routes pour les marques
-$router->map('GET','/brand',['method' => 'findBrand','controller' => '\App\Controllers\BrandController'],'brand-brand-list');
+$router->map('GET','/brand',['method' => 'findBrand','controller' => '\App\Controllers\BrandController'],'brand-brands');
 $router->map('GET','/brand/[i:id]',['method' => 'findBrandById','controller' => '\App\Controllers\BrandController'],'brand-brand-by-id');
 
 // Routes pour la tags
-$router->map('GET','/tag',['method' => 'findTag','controller' => '\App\Controllers\TagController'],'tag-tag-list');
+$router->map('GET','/tag',['method' => 'findTag','controller' => '\App\Controllers\TagController'],'tag-tags');
 $router->map('GET','/tag/[i:id]',['method' => 'findTagById','controller' => '\App\Controllers\TagController'],'tag-tag-by-id');
 
 // Partie connexion à l'administration du site

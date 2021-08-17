@@ -3,6 +3,8 @@
     <h2><?= isset($product) ? 'Modifier' : 'Ajouter' ?> un produit</h2>
 
     <form action="<?= isset($category) ? $router->generate('product-updateProduct', ['id' => $product->getId()])  : $router->generate('product-createProduct')  ?>" method="POST" class="mt-5">
+         <!-- CSRF token pour eviter les attaques CSRF -->
+         <input type="hidden" name="csrf_token" value="<?= $token ?>">
         <div class="form-group ">
             <input type="hidden" class="form-control" id="id" name="id" value="<?= isset($product) ?  $product->getId() : '' ?>">
         </div>

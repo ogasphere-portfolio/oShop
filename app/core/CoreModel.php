@@ -32,20 +32,18 @@ abstract class CoreModel
     abstract protected function update();
     abstract static protected function find($id);
     abstract static protected function findAll();
-    abstract protected function delete();
+    abstract static protected function delete($id);
 
     public function save()
     {
-        if(null !== $this->getId() && $this->getId() > 0) {
-
+        // On verifie que id existe et qu'il est superieur a 0
+        if($this->id && $this->id > 0) {
             $this->update();
-
+            // Update
         } else {
-
             $this->insert();
+            // insert
         }
-
-
     }
 
     public function getColumnNames($table)
@@ -79,8 +77,8 @@ abstract class CoreModel
         // Todo tentative de mise en place d'un insert dynamique
         
         $pdo = Database::getPDO();
-        dd($this)
-;        $fields_list = "";
+       
+;       $fields_list = "";
         $value_list = "";
         $execute_list = [];
        
@@ -103,9 +101,8 @@ abstract class CoreModel
                 $fields_list = "{$fields_list},{$col}"; // liste des champs de la requete
                 $value_list = "{$value_list},:{$col}"; // liste des Value de la requete
 
-                $methodName = 'get'.$colUpperFirst;
                 // les autres lignes du tableau associatif qui sera passé en parametre à execute()
-                $execute_list[':'.$col] = $this->$methodName();
+                $execute_list[':'.$col] = '$this->get'.$colUpperFirst.',';
            }
           
         }

@@ -29,6 +29,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Sélections Accueil &amp; Footer</a>
                     </li>
+                    <?php if(isset($_SESSION['connectedUser']) && $_SESSION['connectedUser'] !== '' && $_SESSION['connectedUser']->getRole() === 'admin'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?=$router->generate('user-users') ?>">Utilisateurs</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
                   <!-- Si on est connecté -->
                   <?php if(isset($_SESSION['connectedUser']) && $_SESSION['connectedUser'] !== ''): ?>

@@ -3,6 +3,8 @@
         <h2><?= isset($category) ? 'Modifier' : 'Ajouter' ?> une catégorie</h2>
         
         <form action="<?= isset($category) ? $router->generate('category-updateCategory', ['id' => $category->getId()])  : $router->generate('category-createCategory')  ?>" method="POST" class="mt-5">
+             <!-- CSRF token pour eviter les attaques CSRF -->
+             <input type="hidden" name="csrf_token" value="<?= $token ?>">
             <div class="form-group ">
                 <input type="hidden" class="form-control" id="id" name="id" value="<?= isset($category) ?  $category->getId() : '' ?>">
             </div>

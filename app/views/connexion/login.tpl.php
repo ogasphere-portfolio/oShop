@@ -7,6 +7,8 @@
 
 <div class="container my-4">
   <form action="<?= $router->generate('user-connexion-control')?>" method="POST" class="mt-5">
+    <!-- CSRF token pour eviter les attaques CSRF -->
+    <input type="hidden" name="csrf_token" value="<?= $token ?>">
     <div class="form-group">
       <label for="email">Email </label>
       <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">

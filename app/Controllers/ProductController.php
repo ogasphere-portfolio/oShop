@@ -22,12 +22,7 @@ class ProductController extends CoreController {
      */
     public function products()
     {
-        // on ne fait pas de verification de connexion pour l'affichage des produits
-        // Un utilisateur non connecté peut voir les produits
-        /* $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
-        ]); */
+       
         
         $products = Product::findAll();
 
@@ -39,9 +34,10 @@ class ProductController extends CoreController {
     public function displayNewProduct()
     {
 
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
+        $randToken = bin2hex(random_bytes(32));
+        $_SESSION['token'] = $randToken;
+        $this->show('auth/loginForm', [
+            'token' => $randToken
         ]);
          // Je recupere la liste de tout type, category et brand
          $categories = Category::findAll();
@@ -56,12 +52,14 @@ class ProductController extends CoreController {
          
         $this->show('product/productForm');
     }
+   
 
     public function displayUpdateProduct($id)
     {
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
+        $randToken = bin2hex(random_bytes(32));
+        $_SESSION['token'] = $randToken;
+        $this->show('auth/loginForm', [
+            'token' => $randToken
         ]);
         // On recupere le contenu d'un produit via son id
 
@@ -86,12 +84,10 @@ class ProductController extends CoreController {
 
     public function createProduct()
     {
+        
         global $router;
 
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
-        ]);
+       
 
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
@@ -110,18 +106,16 @@ class ProductController extends CoreController {
 
         $newProduct->setBrandId($brandId);
 
-        $result = $newProduct->insert();
+        $result = $newProduct->save();
         header('location: ' . $router->generate('product-products'));
+        exit();
 
     }
     public function updateProduct($id)
     {
         global $router;
 
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
-        ]);
+        
 
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
@@ -140,18 +134,16 @@ class ProductController extends CoreController {
         $productToUpdate->setTypeId($typeId);
         $productToUpdate->setBrandId($brandId);
         $productToUpdate->setPicture($picture);
-        $productToUpdate->update();
-        header('location: ' . $router->generate('product-products'));
         
+        $productToUpdate->save();
+        header('location: ' . $router->generate('product-products'));
+        exit();
         //header('location: ' . $router->generate('product-updateProductForm', ['id' => $productToUpdate->getId()]));
     }
 
     public function delete()
     {
-        $this->checkAuthorization([
-            'admin',
-            'catalog-manager'
-        ]);
+       
 
     }
 }

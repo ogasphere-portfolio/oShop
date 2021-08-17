@@ -8,7 +8,7 @@ use App\core\CoreController;
 
 
 
-
+// todo passer la partie connexion dans AuthController
 
 class AppUserController extends CoreController {
 
@@ -16,8 +16,12 @@ class AppUserController extends CoreController {
     
     public function connexion()
     {
+        $randToken = bin2hex(random_bytes(32));
+        $_SESSION['token'] = $randToken;
+        $this->show('connexion/login', [
+            'token' => $randToken
+        ]);
         
-        $this->show('connexion/login');
     }
 
     public function connexionControl()
@@ -62,9 +66,7 @@ class AppUserController extends CoreController {
     
     public function users()
     {
-        $this->checkAuthorization([
-            'admin',
-        ]);
+        
         // Je veux recuperer le liste de toutes les categories
         // sous la forme d'un tableau d'objets
         $users = AppUser::findAll();
@@ -76,17 +78,21 @@ class AppUserController extends CoreController {
 
     public function displayNewUser()
     {
-        $this->checkAuthorization([
-            'admin',
+        $randToken = bin2hex(random_bytes(32));
+        $_SESSION['token'] = $randToken;
+        $this->show('user/userForm', [
+            'token' => $randToken
         ]);
-        $this->show('user/userForm');
+       
     }
 
     public function displayUpdateUser($id)
     {
 
-        $this->checkAuthorization([
-            'admin',
+        $randToken = bin2hex(random_bytes(32));
+        $_SESSION['token'] = $randToken;
+        $this->show('user/userForm', [
+            'token' => $randToken
         ]);
         // On recupere le contenu d'un produit via son id
 
@@ -104,11 +110,8 @@ class AppUserController extends CoreController {
 
     public function createUser()
     {
+       
         global $router;
-
-        $this->checkAuthorization([
-            'admin',
-        ]);
 
         // Recuperer le contenu du formulaire
         // Valider le contenu du formulaire
@@ -126,24 +129,44 @@ class AppUserController extends CoreController {
         $role = CoreModel::valid_donnees($_POST["role"]);
         $status = CoreModel::valid_donnees($_POST["status"]);
         
+
+        $error = false;
+        if($email === '') {
+            $_SESSION['errorMessage'] = "Email non fourni";
+            $error = true;
+        } elseif($password === '') {
+            $_SESSION['errorMessage'] = "Password non fourni";
+            $error = true;
+        } elseif($role === '') {
+            $_SESSION['errorMessage'] = "Role non fourni";
+            $error = true;
+        } elseif($status === '') {
+            $_SESSION['errorMessage'] = "Status non fourni";
+            $error = true;
+        }
+
+        if($error) {
+            header('Location: ' . $router->generate('user-displayNewUser'));
+            exit();
+        }
         // J'instancie une nouvelle categorie vide
         $newUser = new Appuser();
 
-        // Je remplis ma categorie avec les données du formulaire
+        // Je remplis mon user avec les données du formulaire
+        $newUser = new AppUser();
         $newUser->setEmail($email);
-        $newUser->setPassword($password);
+        $newUser->setPassword(password_hash($password, PASSWORD_DEFAULT));
         $newUser->setFirstname($firstname);
         $newUser->setLastname($lastname);
         $newUser->setRole($role);
         $newUser->setStatus($status);
 
-
         // Inserer le contenu du formulaire en BDD
-        // todo a remodifier en insert() apres les test
-        $newUser->Insert('user');
+        
+        $newUser->save();
 
         header('location: ' . $router->generate('user-users'));
-
+        exit();
         // Rediriger vers une page pertinente
 
 
@@ -151,11 +174,9 @@ class AppUserController extends CoreController {
 
     public function updateUser($userId)
     {
-        global $router;
+       
 
-        $this->checkAuthorization([
-            'admin',
-        ]);
+        global $router;
 
         //je récupère les données entrées dans le formulaire
         $newEmail = filter_input(INPUT_POST, 'email', \FILTER_SANITIZE_EMAIL);
@@ -195,8 +216,6 @@ class AppUserController extends CoreController {
     }
     public function delete($userId)
     {
-        $this->checkAuthorization([
-            'admin',
-        ]);
+       
     }
 }
