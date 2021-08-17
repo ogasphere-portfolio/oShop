@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 
+use App\core\CoreModel;
 use App\Models\AppUser;
 use App\core\CoreController;
 
@@ -118,7 +119,13 @@ class AppUserController extends CoreController {
         $role = filter_input(INPUT_POST, 'role', \FILTER_SANITIZE_STRING);
         $status = filter_input(INPUT_POST, 'status', \FILTER_SANITIZE_NUMBER_INT);
 
-       
+        $email = CoreModel::valid_donnees($_POST["email"]);
+        $password = CoreModel::valid_donnees($_POST["password"]);
+        $firstname = CoreModel::valid_donnees($_POST["firstname"]);
+        $lastname = CoreModel::valid_donnees($_POST["lastname"]);
+        $role = CoreModel::valid_donnees($_POST["role"]);
+        $status = CoreModel::valid_donnees($_POST["status"]);
+        
         // J'instancie une nouvelle categorie vide
         $newUser = new Appuser();
 
@@ -158,6 +165,12 @@ class AppUserController extends CoreController {
         $newRole = filter_input(INPUT_POST, 'role', \FILTER_SANITIZE_STRING);
         $newStatus = filter_input(INPUT_POST, 'status', \FILTER_SANITIZE_NUMBER_INT);
 
+        $newEmail = CoreModel::valid_donnees($_POST["email"]);
+        $newPassword = CoreModel::valid_donnees($_POST["password"]);
+        $newFirstname = CoreModel::valid_donnees($_POST["firstname"]);
+        $newLastname = CoreModel::valid_donnees($_POST["lastname"]);
+        $newRole = CoreModel::valid_donnees($_POST["role"]);
+        $newStatus = CoreModel::valid_donnees($_POST["status"]);
         
         //je récupère l'id du user qu'on veut modifier
         $findUserById = AppUser::find($userId);

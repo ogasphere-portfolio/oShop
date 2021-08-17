@@ -19,10 +19,10 @@ class MainController extends CoreController {
     public function home()
     {
 
-        $this->checkAuthorization([
+       /*  $this->checkAuthorization([
             'admin',
             'catalog-manager'
-        ]);
+        ]); */
         $homeCategories = Category::findSome();
         $homeProducts = Product::findSome();
         // On appelle la méthode show() de l'objet courant
