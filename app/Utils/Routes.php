@@ -54,6 +54,15 @@ $router->map('POST','/user/update/[i:id]',['method' => 'updateUser','controller'
 $router->map('POST','/user/new',['method' => 'createUser','controller' => '\App\Controllers\AppUserController'],'user-createUser');
 
 
+
+// Routes pour l'administration de la page home
+
+$router->map('GET','/home_admin/[i:id]',['method' => 'displayUpdateHome_Admin','controller' => '\App\Controllers\HomeController'],'home_admin-displayUpdateHome_Admin');
+$router->map('GET','/home_admin/new',['method' => 'displayNewHome_Admin','controller' => '\App\Controllers\HomeController'],'home_admin-displayNewHome_Admin');
+$router->map('POST','/home_admin/update/[i:id]',['method' => 'updateHome_Admin','controller' => '\App\Controllers\HomeController'],'home_admin-updateHome_Admin');
+$router->map('POST','/home_admin/new',['method' => 'createHome_Admin','controller' => '\App\Controllers\HomeController'],'home_admin-createHome_Admin');
+
+
 // Exemple de route avec mise en forme plus lisible
 /* $router->map(
     'POST',
