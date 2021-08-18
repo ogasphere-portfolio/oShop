@@ -24,9 +24,16 @@ class Tag extends CoreModel {
     {
         # code...
     }
-    public function delete()
+    public static function delete($id)
     {
-        # code...
+        $pdo = Database::getPDO();
+
+        // écrire notre requête
+        $sql = 'DELETE FROM `tag` WHERE `id` =' . $id;
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->exec($sql);
+        return $pdoStatement;
     }
 
     public static function find($typeId)

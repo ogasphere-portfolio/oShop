@@ -146,7 +146,14 @@ class AppUser extends CoreModel
 
     public static function delete($id)
     {
-            // mon code
+        $pdo = Database::getPDO();
+
+        // écrire notre requête
+        $sql = 'DELETE FROM `app_user` WHERE `id` =' . $id;
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->exec($sql);
+        return $pdoStatement;
     }
 
     /**

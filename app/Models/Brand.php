@@ -148,9 +148,16 @@ class Brand extends CoreModel {
         return ($updatedRows > 0);
     }
     
-    public function delete()
+    public static function delete($id)
     {
-        # code...
+        $pdo = Database::getPDO();
+
+        // écrire notre requête
+        $sql = 'DELETE FROM `brand` WHERE `id` =' . $id;
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->exec($sql);
+        return $pdoStatement;
     }
     /**
      * Get the value of name

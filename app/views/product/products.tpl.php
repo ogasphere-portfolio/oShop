@@ -17,6 +17,7 @@
                     <th scope="row"><?= $product->getId() ?></th>
                     <td><?= $product->getName() ?></td>
                     <td><?= $product->getDescription() ?></td>
+                    <td><img src="<?= $product->getPicture() ?>" height="70"></td>
                     <td><?= $product->getPrice() ?></td>
                     <td class="text-right">
                     

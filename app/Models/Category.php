@@ -148,9 +148,10 @@ class Category extends CoreModel {
         $sql = "
             UPDATE `category`
             SET
-                name=:name,
-                subtitle=:subtitle,
-                picture=:picture
+                name = :name,
+                subtitle = :subtitle,
+                picture = :picture,
+                home_order = :homeOrder
             WHERE id=:id
         ";
 
@@ -160,6 +161,7 @@ class Category extends CoreModel {
             ':name' => $this->name,
             ':subtitle' => $this->subtitle,
             ':picture' => $this->picture,
+            ':homeOrder' => $this->getHomeOrder(),
             ':id' => $this->id,
         ]);
 

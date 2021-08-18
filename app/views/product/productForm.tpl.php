@@ -3,8 +3,8 @@
     <h2><?= isset($product) ? 'Modifier' : 'Ajouter' ?> un produit</h2>
 
     <form action="<?= isset($category) ? $router->generate('product-updateProduct', ['id' => $product->getId()])  : $router->generate('product-createProduct')  ?>" method="POST" class="mt-5">
-         <!-- CSRF token pour eviter les attaques CSRF -->
-         <input type="hidden" name="csrf_token" value="<?= $token ?>">
+        <!-- CSRF token pour eviter les attaques CSRF -->
+        <input type="hidden" name="csrf_token" value="<?= $token ?>">
         <div class="form-group ">
             <input type="hidden" class="form-control" id="id" name="id" value="<?= isset($product) ?  $product->getId() : '' ?>">
         </div>
@@ -19,9 +19,9 @@
         </div>
 
         <div class="form-group">
-                    <label for="price">Prix</label>
-                    <input type="text" class="form-control" name="price" id="price" placeholder="" value="<?= isset($product) ?  $product->getPrice() : '' ?>" aria-describedby="pictureHelpBlock">
-                </div>
+            <label for="price">Prix</label>
+            <input type="text" class="form-control" name="price" id="price" placeholder="" value="<?= isset($product) ?  $product->getPrice() : '' ?>" aria-describedby="pictureHelpBlock">
+        </div>
         <div class="form-group">
             <label for="rate">Note</label>
             <input type="text" class="form-control" id="rate" name="rate" placeholder="Note du produit" value="<?= isset($product) ? $product->getRate() : '' ?>">
@@ -34,35 +34,47 @@
             </small>
         </div>
 
-        
+
         <div class="form-group">
-                    <label for="idType">Type</label>
-                    <select name="idType" id="idType">
-                        <?php foreach($types as $type): ?>
-                            <option value="<?= $type->getId() ?>" <?= $type->getId() == $products->getTypeId()? 'selected': '' ?>><?= $type->getName() ?></option>
-                        <?php endforeach ; ?>
-                    </select>
+            <label for="idType">Type</label>
+            <select name="idType" id="idType">
+                <?php foreach ($types as $type) : ?>
+                    <option value="<?= $type->getId() ?>" <?= $type->getId() == $products->getTypeId() ? 'selected' : '' ?>><?= $type->getName() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="idCategory">Category</label>
+            <select name="idCategory" id="idCategory">
+                <?php foreach ($categories as $category) : ?>
+                    <option value="<?= $category->getId() ?>" <?= $category->getId() == $products->getCategoryId() ? 'selected' : '' ?>><?= $category->getName() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="idBrand">Marque</label>
+            <select name="idBrand" id="idBrand">
+                <?php foreach ($brands as $brand) : ?>
+                    <option value="<?= $brand->getId() ?>" <?= $brand->getId() == $products->getBrandId() ? 'selected' : '' ?>><?= $brand->getName() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col">
+                    <label for="tag1">oclock</label><input type="checkbox" name="tags[]" id="tag1" value="1">
+                    <label for="tag2">pokemon</label><input type="checkbox" name="tags[]" id="tag2" value="2">
+                    <label for="tag3">mvc</label><input type="checkbox" name="tags[]" id="tag3" value="3">
+                    <label for="tag4">laine</label><input type="checkbox" name="tags[]" id="tag4" value="4">
+                    <label for="tag5">cotton</label><input type="checkbox" name="tags[]" id="tag5" value="5">
+                    <label for="tag6">poussière</label><input type="checkbox" name="tags[]" id="tag6" value="6">
+                    <label for="tag7">sandwich</label><input type="checkbox" name="tags[]" id="tag7" value="7">
                 </div>
-                <div class="form-group">
-                    <label for="idCategory">Category</label>
-                    <select name="idCategory" id="idCategory">
-                        <?php foreach($categories as $category): ?>
-                            <option value="<?= $category->getId() ?>" <?= $category->getId() == $products->getCategoryId()? 'selected': '' ?>><?= $category->getName() ?></option>
-                        <?php endforeach ; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="idBrand">Marque</label>
-                    <select name="idBrand" id="idBrand">
-                        <?php foreach($brands as $brand): ?>
-                            <option value="<?= $brand->getId() ?>" <?= $brand->getId() == $products->getBrandId()? 'selected': '' ?>><?= $brand->getName() ?></option>
-                        <?php endforeach ; ?>
-                    </select>
-                </div>          
+            </div>
+        </div>
 
 
 
-                
 
         <button type="submit" class="btn btn-primary btn-block mt-5">Valider</button>
     </form>

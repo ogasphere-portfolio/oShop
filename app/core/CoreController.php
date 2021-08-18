@@ -36,6 +36,7 @@ abstract class CoreController {
              'category-updateCategoryForm' => ['admin', 'catalog-manager'],
              'category-updateCategoryAction' => ['admin', 'catalog-manager'],
              'category-deleteCategoryAction' => ['admin', 'catalog-manager'],
+             'category-categoriesOrderForm' => ['admin', 'catalog-manager'],
              'product-products' => ['admin', 'catalog-manager'],
              'product-newProductForm' => ['admin', 'catalog-manager'],
              'product-createProduct' => ['admin', 'catalog-manager'],
@@ -56,7 +57,8 @@ abstract class CoreController {
              'category-createCategory',
              'category-updateCategoryAction',
              'product-createProduct',
-             'product-updateProductAction'
+             'product-updateProductAction',
+             'category-categoriesOrderAction'
          ];
         // Il faut verifier qu'on est sur une route ou on doit tester CSRF
         // inarray verifie su une VALEUR existe contrairement à array_key_exists qui verifie l'existence d'une clé

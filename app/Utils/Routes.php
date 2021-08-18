@@ -57,12 +57,8 @@ $router->map('POST','/user/new',['method' => 'createUser','controller' => '\App\
 
 // Routes pour l'administration de la page home
 
-$router->map('GET','/home_admin/[i:id]',['method' => 'displayUpdateHome_Admin','controller' => '\App\Controllers\HomeController'],'home_admin-displayUpdateHome_Admin');
-$router->map('GET','/home_admin/new',['method' => 'displayNewHome_Admin','controller' => '\App\Controllers\HomeController'],'home_admin-displayNewHome_Admin');
-$router->map('POST','/home_admin/update/[i:id]',['method' => 'updateHome_Admin','controller' => '\App\Controllers\HomeController'],'home_admin-updateHome_Admin');
-$router->map('POST','/home_admin/new',['method' => 'createHome_Admin','controller' => '\App\Controllers\HomeController'],'home_admin-createHome_Admin');
-
-
+$router->map('GET','/categories/order',['method' => 'categoriesOrderForm','controller' => '\App\Controllers\CategoryController'],'category-categoriesOrderForm');
+$router->map('POST','/categories/order',['method' => 'categoriesOrderAction','controller' => '\App\Controllers\CategoryController'],'category-categoriesOrderAction');
 // Exemple de route avec mise en forme plus lisible
 /* $router->map(
     'POST',

@@ -14,6 +14,47 @@ use App\core\CoreController;
 class CategoryController extends CoreController
 {
 
+    public function categoriesOrderForm()
+    {
+        $randToken = bin2hex(random_bytes(32));
+        $_SESSION['token'] = $randToken;
+        $categories = Category::findAll();
+        $this->show('category/categoriesOrder', [
+            'categories' => $categories,
+            'token' => $randToken
+        ]);
+    }
+    public function categoriesOrderAction()
+    {
+        global $router;
+        // On recupere un tableau de toutes les categories
+        $categories = Category::findAll();
+
+        // On recupere le contenu du formulaire sous la forme
+        /**
+         * [
+         * 'home_order' => 'id'
+         * ]
+         */
+        $categoriesPosition = $_POST['emplacement'];
+
+        // Je parcours chacune de mes categories
+        foreach ($categories as $category) {
+            // on verifie si l'id de la categorie est présente dans $categoriesPosition
+            if(in_array($category->getId(), $categoriesPosition)) {
+                // Je met a jour home_order avec le resultat de la recherche suivante
+                // Recuperer la clé correspondant a l'id de notre categorie
+                $homeOrder = array_search($category->getId(), $categoriesPosition);
+                $category->setHomeOrder($homeOrder);
+            } else {
+                // Je met home_order a 0
+                $category->setHomeOrder(0);
+            }
+            $category->save();
+        }
+        header('location: ' . $router->generate('category-categoriesOrderForm'));
+        exit();
+    }
     /**
      * Méthode s'occupant de la page d'accueil
      *
