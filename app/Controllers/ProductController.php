@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 
 
+use App\Models\Tag;
 use App\Models\Type;
 use App\Models\Brand;
 use App\Models\Product;
@@ -36,19 +37,15 @@ class ProductController extends CoreController {
 
         $randToken = bin2hex(random_bytes(32));
         $_SESSION['token'] = $randToken;
-        $this->show('auth/loginForm', [
+       
+         // Je recupere la liste de tout type, category et brand
+        
+         $this->show('product/productForm', [
+            'brands' => Brand::findAll(),
+            'categories' => Category::findAll(),
+            'types' => Type::findAll(),
             'token' => $randToken
         ]);
-         // Je recupere la liste de tout type, category et brand
-         $categories = Category::findAll();
-         $brands = Brand::findAll();
-         $types = Type::findAll();
- 
-         $this->show('product/productForm', [
-             'categories' => $categories,
-             'brands' => $brands,
-             'types' => $types,
-         ]);
          
         $this->show('product/productForm');
     }
@@ -58,23 +55,21 @@ class ProductController extends CoreController {
     {
         $randToken = bin2hex(random_bytes(32));
         $_SESSION['token'] = $randToken;
-        $this->show('auth/loginForm', [
-            'token' => $randToken
-        ]);
+       
         // On recupere le contenu d'un produit via son id
 
         // On l'envoie vers la vue
         $productToUpdate = Product::find($id);
-
-        $categories = Category::find($productToUpdate->getCategoryId());
-        $brands = Brand::find($productToUpdate->getBrandId());
-        $types = Type::find($productToUpdate->getTypeId());
+        
+       
         if($productToUpdate) {
             $this->show('product/productForm', [
-                'product' => $productToUpdate,
-                'categories' => $categories,
-                'brands' => $brands,
-                'types' => $types,
+                'brands' => Brand::findAll(),
+                'categories' => Category::findAll(),
+                'types' => Type::findAll(),
+                'product' => Product::find($id),
+                'tags' => Tag::findAllByProduct($id),
+                'token' => $randToken
             ]);
         } else {
             dd('Id non trouvée dans la BDD');
@@ -92,9 +87,9 @@ class ProductController extends CoreController {
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
         $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_STRING);
-        $categoryId = filter_input(INPUT_POST, 'idCategory', FILTER_SANITIZE_STRING);
-        $typeId = filter_input(INPUT_POST, 'idType', FILTER_SANITIZE_STRING);
-        $brandId = filter_input(INPUT_POST, 'idBrand', FILTER_SANITIZE_STRING);
+        $categoryId = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_STRING);
+        $typeId = filter_input(INPUT_POST, 'type_id', FILTER_SANITIZE_STRING);
+        $brandId = filter_input(INPUT_POST, 'brand_id', FILTER_SANITIZE_STRING);
         
 
         $newProduct = new Product();
@@ -116,16 +111,17 @@ class ProductController extends CoreController {
         global $router;
 
         
-
+        $productToUpdate = Product::find($id);
+      
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
         $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_STRING);
-        $categoryId = filter_input(INPUT_POST, 'idCategory', FILTER_SANITIZE_STRING);
-        $typeId = filter_input(INPUT_POST, 'idType', FILTER_SANITIZE_STRING);
-        $brandId = filter_input(INPUT_POST, 'idBrand', FILTER_SANITIZE_STRING);
+        $categoryId = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_STRING);
+        $typeId = filter_input(INPUT_POST, 'type_id', FILTER_SANITIZE_STRING);
+        $brandId = filter_input(INPUT_POST, 'brand_id', FILTER_SANITIZE_STRING);
         $picture = filter_input(INPUT_POST, 'picture', FILTER_SANITIZE_STRING);
         
-        $productToUpdate = Product::find($id);
+        
 
         $productToUpdate->setName($name);
         $productToUpdate->setDescription($description);
@@ -138,13 +134,16 @@ class ProductController extends CoreController {
         $productToUpdate->save();
         header('location: ' . $router->generate('product-products'));
         exit();
-        //header('location: ' . $router->generate('product-updateProductForm', ['id' => $productToUpdate->getId()]));
+        
     }
 
-    public function delete()
+    public function deleteProduct($id)
     {
-       
+        global $router;
 
+        Product::delete($id);
+        header('location: ' . $router->generate('product-products'));
+        exit();
     }
 }
 

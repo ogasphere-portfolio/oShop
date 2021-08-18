@@ -214,8 +214,13 @@ class AppUserController extends CoreController {
         header('Location: ' . $router->generate('user-users'));
 
     }
-    public function delete($userId)
+    public function deleteAppUser($id)
     {
-       
+        
+        global $router;
+
+        AppUser::delete($id);
+        header('location: ' . $router->generate('user-users'));
+        exit();
     }
 }

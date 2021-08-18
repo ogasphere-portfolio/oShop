@@ -12,8 +12,12 @@ use App\Utils\Database;
  * Un objet issu de cette classe réprésente un enregistrement dans cette table
  */
 class Tag extends CoreModel {
-    
-
+   
+    /**
+     * @var string
+     */
+    private $name;
+   
     // todo creer les proprietes
 
     public function insert()
@@ -53,6 +57,31 @@ class Tag extends CoreModel {
         // retourner le résultat
         return $type;
     }
+    public static function findAllByProduct($productId)
+    {
+        // se connecter à la BDD
+        $pdo = Database::getPDO();
+
+        // écrire notre requête
+        $sql = 'SELECT
+                tag.name as tag_name,
+                product.name as product_name,
+                product.id as product_id 
+                FROM tag 
+                INNER JOIN product_has_tag ON tag.id = product_has_tag.tag_id 
+                INNER JOIN product ON product.id = product_has_tag.product_id
+                WHERE product.id ='.$productId.'
+                ORDER BY product.id';
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->query($sql);
+
+        // un seul résultat => fetchObject
+        $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Tag');
+
+        // retourner le résultat
+        return $results;
+    }
 
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table type
@@ -90,4 +119,34 @@ class Tag extends CoreModel {
     }
 
    
+
+    /**
+     * Get the value of id
+     *
+     * @return  int
+     */ 
+    
+    /**
+     * Get the value of name
+     *
+     * @return  string
+     */ 
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @param  string  $name
+     *
+     * @return  self
+     */ 
+    public function setName(string $name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 }

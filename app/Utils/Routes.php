@@ -28,6 +28,7 @@ $router->map('GET','/product/new',['method' => 'displayNewProduct','controller' 
 $router->map('GET','/product/edit/[i:id]',['method' => 'displayUpdateProduct','controller' => '\App\Controllers\ProductController'],'product-displayUpdateProduct');
 $router->map('POST','/product/update/[i:id]',['method' => 'updateProduct','controller' => '\App\Controllers\ProductController'],'product-updateProduct');
 $router->map('POST','/product/new',['method' => 'createProduct','controller' => '\App\Controllers\ProductController'],'product-createProduct');
+$router->map('GET','/product/delete/[i:id]',['method' => 'deleteProduct','controller' => '\App\Controllers\ProductController'],'product-deleteProduct');
 
 // Routes pour les Types
 $router->map('GET','/type',['method' => 'findType','controller' => '\App\Controllers\TypeController'],'type-types');

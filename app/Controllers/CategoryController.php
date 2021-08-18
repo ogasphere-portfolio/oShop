@@ -86,9 +86,7 @@ class CategoryController extends CoreController
     {
         $randToken = bin2hex(random_bytes(32));
         $_SESSION['token'] = $randToken;
-        $this->show('category/categoryForm', [
-            'token' => $randToken
-        ]);
+       
         // On recupere le contenu d'un produit via son id
 
         // On l'envoie vers la vue
@@ -97,6 +95,7 @@ class CategoryController extends CoreController
         if ($category) {
             $this->show('category/categoryForm', [
                 'category' => $category,
+                'token' => $randToken
             ]);
         } else {
             dd('Id non trouvée dans la BDD');
