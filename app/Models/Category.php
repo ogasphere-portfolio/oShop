@@ -5,7 +5,8 @@ namespace App\Models;
 use App\Utils\Database;
 use PDO;
 
-class Category extends CoreModel {
+class Category extends CoreModel
+{
 
     /**
      * @var string
@@ -24,7 +25,7 @@ class Category extends CoreModel {
      */
     private $home_order;
 
-     /**
+    /**
      * Méthode permettant de récupérer un enregistrement de la table Category en fonction d'un id donné
      * 
      * @param int $categoryId ID de la catégorie
@@ -59,7 +60,7 @@ class Category extends CoreModel {
         $sql = 'SELECT * FROM `category`';
         $pdoStatement = $pdo->query($sql);
         $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Category');
-        
+
         return $results;
     }
 
@@ -69,7 +70,7 @@ class Category extends CoreModel {
         $sql = "SELECT * FROM `category` LIMIT {$elementsToFind}";
         $pdoStatement = $pdo->query($sql);
         $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Category');
-        
+
         return $results;
     }
 
@@ -89,10 +90,10 @@ class Category extends CoreModel {
         ';
         $pdoStatement = $pdo->query($sql);
         $categories = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Category');
-        
+
         return $categories;
     }
-     /**
+    /**
      * Méthode permettant d'ajouter un enregistrement dans la table brand
      * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
      * 
@@ -102,7 +103,8 @@ class Category extends CoreModel {
     {
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
-
+        // Définir le jeu de caractères UTF-8 pour la connexion
+        $pdo->exec("SET NAMES 'utf8'");
         // Ecriture de la requête INSERT INTO
         $sql = "
             INSERT INTO category (name, subtitle, picture)
@@ -130,7 +132,7 @@ class Category extends CoreModel {
             return true;
             // => l'interpréteur PHP sort de cette fonction car on a retourné une donnée
         }
-        
+
         // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
         return false;
     }
@@ -144,7 +146,8 @@ class Category extends CoreModel {
     {
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
-
+        // Définir le jeu de caractères UTF-8 pour la connexion
+        $pdo->exec("SET NAMES 'utf8'");
 
         $request = $pdo->prepare("UPDATE `category`SET
             name = '{$this->name}',
@@ -154,7 +157,7 @@ class Category extends CoreModel {
             home_order = '{$this->home_order}',
         WHERE id = {$this->id}");
 
-        
+
 
         $insertedRows = $request->execute([
             ':name' => $this->getName(),
@@ -187,7 +190,7 @@ class Category extends CoreModel {
      * Get the value of name
      *
      * @return  string
-     */ 
+     */
     public function getName()
     {
         return $this->name;
@@ -197,7 +200,7 @@ class Category extends CoreModel {
      * Set the value of name
      *
      * @param  string  $name
-     */ 
+     */
     public function setName(string $name)
     {
         $this->name = $name;
@@ -205,7 +208,7 @@ class Category extends CoreModel {
 
     /**
      * Get the value of subtitle
-     */ 
+     */
     public function getSubtitle()
     {
         return $this->subtitle;
@@ -213,7 +216,7 @@ class Category extends CoreModel {
 
     /**
      * Set the value of subtitle
-     */ 
+     */
     public function setSubtitle($subtitle)
     {
         $this->subtitle = $subtitle;
@@ -221,7 +224,7 @@ class Category extends CoreModel {
 
     /**
      * Get the value of picture
-     */ 
+     */
     public function getPicture()
     {
         return $this->picture;
@@ -229,7 +232,7 @@ class Category extends CoreModel {
 
     /**
      * Set the value of picture
-     */ 
+     */
     public function setPicture($picture)
     {
         $this->picture = $picture;
@@ -237,7 +240,7 @@ class Category extends CoreModel {
 
     /**
      * Get the value of home_order
-     */ 
+     */
     public function getHomeOrder()
     {
         return $this->home_order;
@@ -245,11 +248,9 @@ class Category extends CoreModel {
 
     /**
      * Set the value of home_order
-     */ 
+     */
     public function setHomeOrder($home_order)
     {
         $this->home_order = $home_order;
     }
-
-   
 }

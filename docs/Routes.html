@@ -1,0 +1,118 @@
+<h1 id="projet-oshop">Projet oShop</h1>
+<h2 id="listes-de-toutes-les-routes-suivant-les-userstories-de-la-partie-back-office">Listes de toutes les routes suivant les userstories de la partie back-Office</h2>
+<h3 id="la-page-dacceuil">la page d'acceuil</h3>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;home&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\MainController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;main-home&#x27;</span>
+);
+</code></pre>
+<h3 id="les-produits">Les produits</h3>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/produit&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findProduct&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\ProductController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;product-product-list&#x27;</span>
+);
+
+<span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/produit/[i:id]&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findProductById&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\ProductController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;product-product-by-id&#x27;</span>
+);
+</code></pre>
+<h3 id="les-categories">Les categories</h3>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/categorie&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findCategory&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\CategoryController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;category-category-list&#x27;</span>
+);
+
+<span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/categorie/[i:id]&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findCategoryById&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\CategoryController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;category-category-by-id&#x27;</span>
+);
+</code></pre>
+<h3 id="les-types">Les types</h3>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/type&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findType&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\TypeController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;type-type-list&#x27;</span>
+);
+
+<span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/type/[i:id]&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findTypeById&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\TypeController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;type-type-by-id&#x27;</span>
+);
+</code></pre>
+<h3 id="les-marques">Les marques</h3>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/brand&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findBrand&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\BrandController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;brand-brand-list&#x27;</span>
+);
+
+<span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/brand/[i:id]&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findBrandById&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\BrandController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;brand-brand-by-id&#x27;</span>
+);
+</code></pre>
+<h3 id="les-tags">Les tags</h3>
+<pre><code class="hljs php language-php"><span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/tag&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findTag&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\TagController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;tag-tag-list&#x27;</span>
+);
+
+<span class="hljs-variable">$router</span>-&gt;<span class="hljs-title function_ invoke__">map</span>(
+    <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-string">&#x27;/tag/[i:id]&#x27;</span>,
+    [
+        <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-string">&#x27;findTagById&#x27;</span>,
+        <span class="hljs-string">&#x27;controller&#x27;</span> =&gt; <span class="hljs-string">&#x27;\App\Controllers\TagController&#x27;</span>
+    ],
+    <span class="hljs-string">&#x27;tag-tag-by-id&#x27;</span>
+);
+</code></pre>

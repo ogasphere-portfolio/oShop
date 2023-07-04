@@ -1,6 +1,6 @@
 # User stories
 
-Fiche récap : https://github.com/O-clock-Alumni/fiches-recap/blob/master/gestion-projet/user-stories.md#sp%C3%A9cifications
+Fiche récap : assets/docs/aide/gestion-projet/user-stories.md#sp%C3%A9cifications
 
 ## Catalogue
 

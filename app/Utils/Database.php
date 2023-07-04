@@ -30,11 +30,12 @@ class Database {
         // Récupération des données du fichier de config
         // la fonction parse_ini_file parse le fichier et retourne un array associatif
         $configData = parse_ini_file(__DIR__.'/../config.ini');
-        
+        // Construire la chaîne de connexion PDO avec le jeu de caractères spécifié
+        $dsn = "mysql:host={$configData['DB_HOST']};dbname={$configData['DB_NAME']};charset={$configData['DB_CHARSET']}";
         // PHP essaie d'exécuter tout le code à l'intérieur du bloc "try", mais...
         try {
             $this->dbh = new PDO(
-                "mysql:host={$configData['DB_HOST']};dbname={$configData['DB_NAME']};charset=utf8",
+                $dsn ,
                 $configData['DB_USERNAME'],
                 $configData['DB_PASSWORD'],
                 array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING) // Affiche les erreurs SQL à l'écran

@@ -106,7 +106,7 @@ class Product extends CoreModel {
     {
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
-
+        $pdo->exec("SET NAMES 'utf8'");
         // Ecriture de la requête INSERT INTO
         /**$sql = "
             INSERT INTO category (name, subtitle, picture)
