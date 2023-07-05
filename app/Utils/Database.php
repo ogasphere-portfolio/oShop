@@ -6,7 +6,8 @@ use PDO;
 
 // Retenir son utilisation  => Database::getPDO()
 // Design Pattern : Singleton
-class Database {
+class Database
+{
     /**
      * Objet PDO représentant la connexion à la base de données
      * 
@@ -26,25 +27,28 @@ class Database {
      * en visibilité private
      * => seul le code de la classe a le droit de créer une instance de cette classe
      */
-    private function __construct() {
+    private function __construct()
+    {
         // Récupération des données du fichier de config
         // la fonction parse_ini_file parse le fichier et retourne un array associatif
-        $configData = parse_ini_file(__DIR__.'/../config.ini');
+        $configData = parse_ini_file(__DIR__ . '/../config.ini');
         // Construire la chaîne de connexion PDO avec le jeu de caractères spécifié
         $dsn = "mysql:host={$configData['DB_HOST']};dbname={$configData['DB_NAME']};charset={$configData['DB_CHARSET']}";
+        // Construire le tableau d'options avec le jeu de caractères UTF-8
+
         // PHP essaie d'exécuter tout le code à l'intérieur du bloc "try", mais...
         try {
             $this->dbh = new PDO(
-                $dsn ,
+                $dsn,
                 $configData['DB_USERNAME'],
                 $configData['DB_PASSWORD'],
                 array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING) // Affiche les erreurs SQL à l'écran
             );
         }
         // ... mais si une erreur (Exception) survient, alors on attrape l'exception et on exécute le code que l'on souhaite (ici, on affiche un message d'erreur)
-        catch(\Exception $exception) {
+        catch (\Exception $exception) {
             echo 'Erreur de connexion...<br>';
-            echo $exception->getMessage().'<br>';
+            echo $exception->getMessage() . '<br>';
             echo '<pre>';
             echo $exception->getTraceAsString();
             echo '</pre>';
@@ -58,7 +62,8 @@ class Database {
      *
      * @return PDO
      */
-    public static function getPDO() {
+    public static function getPDO()
+    {
         // Si on n'a pas encore créé la seule instance de la classe
         if (empty(self::$_instance)) {
             // Alors, on crée cette instance et on la stocke dans la propriété statique $_instance
