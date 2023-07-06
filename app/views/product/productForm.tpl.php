@@ -2,7 +2,9 @@
     <a href="<?= $router->generate('product-products') ?>" class="btn btn-success float-right">Retour</a>
     <h2><?= isset($product) ? 'Modifier' : 'Ajouter' ?> un produit</h2>
 
-    <form action="" method="POST" class="mt-5">
+    <form action="<?= isset($product) ? $router->generate('product-updateProduct', ['id' => $product->getId()])  : $router->generate('product-createProduct')  ?>" method="POST" class="mt-5">
+        <!-- CSRF token pour eviter les attaques CSRF -->
+        <input type="hidden" name="csrf_token" value="<?= $token ?>">
         <div class="form-group ">
             <input type="hidden" class="form-control" id="id" name="id" value="<?= isset($product) ?  $product->getId() : '' ?>">
         </div>
@@ -11,15 +13,15 @@
             <input type="text" class="form-control" id="name" name="name" value="<?= isset($product) ?  $product->getName() : '' ?>">
         </div>
         <div class="form-group">
-            <label for="subtitle">Description</label>
-            <input value="Ceci est un produit" type="text" class="form-control" name="description" id="subtitle" placeholder="" value="<?= isset($product) ? $product->getSubtitle() : '' ?>" aria-describedby="subtitleHelpBlock">
+            <label for="description">Description</label>
+            <input value="Ceci est un produit" type="text" class="form-control" name="description" id="description" placeholder="" value="<?= isset($product) ? $product->getDescription() : '' ?>" aria-describedby="subtitleHelpBlock">
 
         </div>
 
         <div class="form-group">
-                    <label for="picture">Prix</label>
-                    <input type="text" class="form-control" name="price" id="picture" placeholder="" value="<?= isset($product) ?  $product->getPrice() : '' ?>" aria-describedby="pictureHelpBlock">
-                </div>
+            <label for="price">Prix</label>
+            <input type="float" class="form-control" name="price" id="price" placeholder="" value="<?= isset($product) ?  $product->getPrice() : '' ?>" aria-describedby="pictureHelpBlock">
+        </div>
         <div class="form-group">
             <label for="rate">Note</label>
             <input type="text" class="form-control" id="rate" name="rate" placeholder="Note du produit" value="<?= isset($product) ? $product->getRate() : '' ?>">
@@ -31,17 +33,60 @@
                 URL relative d'une image (jpg, gif, svg ou png) fournie sur <a href="https://benoclock.github.io/S06-images/" target="_blank">cette page</a>
             </small>
         </div>
+       
         <div class="form-group">
-            <label for="idType">Id type</label>
-            <input value="1" type="number" class="form-control" name="idType" id="idType" placeholder="" value="<?= isset($product) ? $product->getTypeId() : '' ?>">
+            <div class="row">
+                <div class="col-4">
+                    <label for="brand">Marque :</label>
+                    <select name="brand_id" id="brand" class="form-control">
+                        <?php foreach ($brands as $brand) : ?>
+                            <option value="<?= $brand->getId() ?>" <?= isset($product) && $brand->getId() == $product->getBrandId()  ? ' selected' : '' ?>><?= $brand->getName() ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                         
+                <div class="col-4">
+                    <label for="category">Catégories :</label>
+                    <select name="category_id" id="category" class="form-control">
+                        <?php foreach ($categories as $category) : ?>
+                            <option value="<?= $category->getId() ?>" <?= isset($product) && $category->getId() == $product->getCategoryId() ? ' selected' : '' ?>><?= $category->getName() ?></option>
+
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label for="type">Types de produits :</label>
+                    <select name="type_id" id="type" class="form-control">
+                        <?php foreach ($types as $type) : ?>
+                            <option value="<?= $type->getId() ?>" <?= isset($product) && $type->getId() == $product->getTypeId() ? ' selected' : '' ?>><?= $type->getName() ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="form-group">
-            <label for="idCategory">Id Category</label>
-            <input value="1" type="number" class="form-control" name="idCategory" id="idCategory" placeholder="" value="<?= isset($product) ? $product->getCategoryId() : '' ?>">
+            <div class="row">
+                <div class="col">
+                    <?php 
+                        foreach($tags as $tag =>$value):?>
+                        
+                        <label for="tag<?=$tag +1 ?>">""</label><input type="checkbox" name="tags[<?=$tag +1 ?>]" id="tag<?=$tag + 1?>" value="<?= $tag->getId() ?>">
+                       
+                    <?php endforeach; ?>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="idBrand">Id Marque</label>
-            <input value="1" type="number" class="form-control" name="idBrand" id="idBrand" placeholder="" value="<?= isset($product) ? $product->getBrandId() : '' ?>">
+
+        <div class="col">
+            <div class="form-group">
+                <label for="emplacement5">Emplacement #5</label>
+                <select class="form-control" id="emplacement5" name="emplacement[5]">
+                    <option value="">choisissez :</option>
+                    <?php foreach($categories as $category): ?>
+                        <option <?= $category->getHomeOrder() === '5' ? 'selected' : '' ?> value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary btn-block mt-5">Valider</button>

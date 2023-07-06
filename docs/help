@@ -5,3 +5,6 @@ ou
 
 cette commande permet de laisser l" acces aux autres par le vpn
 php -S 0.0.0.0:8080 -t public
+
+// requete pour créer une clé composée
+ALTER TABLE `votes` ADD UNIQUE `unique_index`(`user`, `email`, `address`);

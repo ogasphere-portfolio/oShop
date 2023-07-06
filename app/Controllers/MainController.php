@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
+use App\core\CoreController;
 
 
 // Si j'ai besoin du Model Category
@@ -17,6 +18,11 @@ class MainController extends CoreController {
      */
     public function home()
     {
+
+       /*  $this->checkAuthorization([
+            'admin',
+            'catalog-manager'
+        ]); */
         $homeCategories = Category::findSome();
         $homeProducts = Product::findSome();
         // On appelle la méthode show() de l'objet courant

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Utils\Database;
 use PDO;
+use App\core\CoreModel;
+use App\Utils\Database;
 
 class Category extends CoreModel
 {
@@ -101,7 +102,6 @@ class Category extends CoreModel
      */
     public function insert()
     {
-        // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
         // Définir le jeu de caractères UTF-8 pour la connexion
         $pdo->exec("SET NAMES 'utf8'");
@@ -142,7 +142,7 @@ class Category extends CoreModel
      * 
      * @return bool
      */
-    public function update($id)
+    public function update()
     {
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
@@ -179,13 +179,32 @@ class Category extends CoreModel
         return false;
 
         // Execution de la requête de mise à jour (exec, pas query)
-        $updatedRows = $pdo->exec($sql);
+        $updatedRows = $request->execute([
+            ':name' => $this->name,
+            ':subtitle' => $this->subtitle,
+            ':picture' => $this->picture,
+            ':homeOrder' => $this->getHomeOrder(),
+            ':id' => $this->id,
+        ]);
 
+    
         // On retourne VRAI, si au moins une ligne ajoutée
-        return ($updatedRows > 0);
+    return ($updatedRows > 0);
+        
     }
 
 
+    public static function delete($id)
+    {
+        $pdo = Database::getPDO();
+
+        // écrire notre requête
+        $sql = 'DELETE FROM `category` WHERE `id` =' . $id;
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->exec($sql);
+        return $pdoStatement;
+    }
     /**
      * Get the value of name
      *

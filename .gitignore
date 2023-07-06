@@ -3,3 +3,7 @@ vendor
 
 # Fichier de config
 app/config.ini
+
+
+# Fichiers users et mdp de test
+app/docs/users et mdp test.md

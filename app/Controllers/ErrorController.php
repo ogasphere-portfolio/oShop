@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\core\CoreController;
+
 // Classe gérant les erreurs (404, 403)
 class ErrorController extends CoreController {
     /**

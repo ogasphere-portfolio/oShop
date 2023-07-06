@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Utils\Database;
 use PDO;
+use App\core\CoreModel;
+use App\Utils\Database;
 
 /**
  * Une instance de Product = un produit dans la base de données
@@ -158,6 +159,59 @@ class Product extends CoreModel {
         
         // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
         return false;
+    }
+
+    public function update()
+    {
+        $pdo = Database::getPDO();
+        $sql = '
+            UPDATE product 
+            SET
+            name = :name,
+            description = :description,
+            price = :price,
+            picture = :picture,
+            category_id = :category_id,
+            brand_id = :brand_id,
+            type_id = :type_id
+            WHERE id = :id
+
+        ';
+        $request = $pdo->prepare($sql);
+        $updatedRows = $request->execute([
+            ':name' => $this->getName(),
+            ':description' => $this->getDescription(),
+            ':price' => $this->getPrice(),
+            ':picture' => $this->getPicture(),
+            ':category_id' => $this->getCategoryId(),
+            ':brand_id' => $this->getBrandId(),
+            ':type_id' => $this->getTypeId(),
+            ':id' => $this->getId()
+        ]);
+        if ($updatedRows > 0) {
+            // Alors on récupère l'id auto-incrémenté généré par MySQL
+            //$this->id = $pdo->lastInsertId();
+
+            // On retourne VRAI car l'ajout a parfaitement fonctionné
+            return true;
+            // => l'interpréteur PHP sort de cette fonction car on a retourné une donnée
+        }
+        
+        // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
+        return false;
+
+    }
+
+    public static function delete($id)
+    {
+        $pdo = Database::getPDO();
+
+        // écrire notre requête
+        $sql = 'DELETE FROM `product` WHERE `id` =' . $id;
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->exec($sql);
+        return $pdoStatement;
     }
     /**
      * Get the value of name

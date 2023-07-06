@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Utils\Database;
 use PDO;
+use App\core\CoreModel;
+use App\Utils\Database;
 
 /**
  * Un modèle représente une table (un entité) dans notre base
@@ -29,7 +30,28 @@ class Type extends CoreModel {
      * @param int $typeId ID du type
      * @return Type
      */
-    public function find($typeId)
+
+    public function insert()
+    {
+        # code...
+    }
+    public function update()
+    {
+        # code...
+    }
+    public static function delete($id)
+    {
+        $pdo = Database::getPDO();
+
+        // écrire notre requête
+        $sql = 'DELETE FROM `type` WHERE `id` =' . $id;
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->exec($sql);
+        return $pdoStatement;
+    }
+
+    public static function find($typeId)
     {
         // se connecter à la BDD
         $pdo = Database::getPDO();
@@ -52,7 +74,7 @@ class Type extends CoreModel {
      * 
      * @return Type[]
      */
-    public function findAll()
+    public static function findAll()
     {
         $pdo = Database::getPDO();
         $sql = 'SELECT * FROM `type`';
@@ -67,7 +89,7 @@ class Type extends CoreModel {
      * 
      * @return Type[]
      */
-    public function findAllFooter()
+    public static function findAllFooter()
     {
         $pdo = Database::getPDO();
         $sql = '

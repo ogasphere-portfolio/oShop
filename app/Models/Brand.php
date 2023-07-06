@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Utils\Database;
 use PDO;
+use App\core\CoreModel;
+use App\Utils\Database;
 
 /**
  * Un modèle représente une table (un entité) dans notre base
@@ -29,7 +30,7 @@ class Brand extends CoreModel {
      * @param int $brandId ID de la marque
      * @return Brand
      */
-    public function find($brandId)
+    public static function find($brandId)
     {
         // se connecter à la BDD
         $pdo = Database::getPDO();
@@ -55,7 +56,7 @@ class Brand extends CoreModel {
      * 
      * @return Brand[]
      */
-    public function findAll()
+    public static function findAll()
     {
         $pdo = Database::getPDO();
         $sql = 'SELECT * FROM `brand`';
@@ -70,7 +71,7 @@ class Brand extends CoreModel {
      * 
      * @return Brand[]
      */
-    public function findAllFooter()
+    public static function findAllFooter()
     {
         $pdo = Database::getPDO();
         $sql = '
@@ -146,7 +147,18 @@ class Brand extends CoreModel {
         // On retourne VRAI, si au moins une ligne ajoutée
         return ($updatedRows > 0);
     }
+    
+    public static function delete($id)
+    {
+        $pdo = Database::getPDO();
 
+        // écrire notre requête
+        $sql = 'DELETE FROM `brand` WHERE `id` =' . $id;
+
+        // exécuter notre requête
+        $pdoStatement = $pdo->exec($sql);
+        return $pdoStatement;
+    }
     /**
      * Get the value of name
      *

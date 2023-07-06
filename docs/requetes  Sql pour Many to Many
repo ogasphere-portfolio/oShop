@@ -1,0 +1,38 @@
+
+SELECT tag.*
+FROM product
+INNER JOIN product_has_tag ON product.id = product_has_tag.product_id
+INNER JOIN tag ON tag.id = product_has_tag.tag_id
+WHERE product.id = 11
+
+
+SELECT product.*
+FROM product
+INNER JOIN product_has_tag ON product.id = product_has_tag.product_id
+INNER JOIN tag ON tag.id = product_has_tag.tag_id
+WHERE tag.id = 7
+
+SELECT * FROM product
+WHERE id IN (
+   SELECT product_id from product_has_tag where tag_id = 7
+)
+
+SELECT
+    tag.name as tag_name,
+    product.name as product_name,
+    product.id as product_id 
+FROM tag 
+INNER JOIN product_has_tag ON tag.id = product_has_tag.tag_id 
+INNER JOIN product ON product.id = product_has_tag.product_id
+ORDER BY product.id
+
+
+SELECT
+    tag.name as tag_name,
+    product.name as product_name,
+    product.id as product_id 
+FROM tag 
+INNER JOIN product_has_tag ON tag.id = product_has_tag.tag_id 
+INNER JOIN product ON product.id = product_has_tag.product_id
+WHERE product.id = 11
+ORDER BY product.id
