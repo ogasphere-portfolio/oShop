@@ -6,6 +6,9 @@
 
 
 <div class="container my-4">
+  <div><h1>Pour vous connecter :</h1><h4>email : test@test.com</h4>
+   <h4>Mot de passe : test</h4>
+  </div>
   <form action="<?= $router->generate('user-connexion-control')?>" method="POST" class="mt-5">
     <!-- CSRF token pour eviter les attaques CSRF -->
     <input type="hidden" name="csrf_token" value="<?= $token ?>">
